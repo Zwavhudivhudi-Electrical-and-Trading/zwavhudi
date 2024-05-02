@@ -37,10 +37,6 @@ def _add_blue_prints(app: Flask):
     from src.routes.auth import auth_route
 
 
-
-
-
-
     routes = [auth_route, home_route]
     for route in routes:
         app.register_blueprint(route)
@@ -63,7 +59,7 @@ def create_app(config):
     app.template_folder = template_folder()
     app.static_folder = static_folder()
     app.config['SECRET_KEY'] = config.SECRET_KEY
-    app.config['BASE_URL'] = "https://funeral-manager.org"
+    app.config['BASE_URL'] = "https://dreamland-chemicals.org"
 
     with app.app_context():
         from src.main.bootstrapping import bootstrapper

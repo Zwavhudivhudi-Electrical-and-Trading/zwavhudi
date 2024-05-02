@@ -33,7 +33,7 @@ class Logging(BaseSettings):
 
 class ResendSettings(BaseSettings):
     API_KEY: str = Field(..., env="RESEND_API_KEY")
-    from_: str = Field(default="norespond@last-shelter.vip")
+    from_: str = Field(default="norespond@dreamland-chemicals.org")
 
     class Config:
         env_file = '.env.development'
@@ -68,7 +68,7 @@ class BrainTreeSettings(BaseSettings):
 
 class Settings(BaseSettings):
     APP_NAME: str = Field(default='Last Base')
-    LOGO_URL: str = Field(default="https://last-shelter.vip/static/images/custom/logo.png")
+    LOGO_URL: str = Field(default="https://dreamland-chemicals.org/static/images/custom/logo.png")
     SECRET_KEY: str = Field(..., env="SECRET_KEY")
     CLIENT_SECRET: str = Field(..., env="CLIENT_SECRET")
     MYSQL_SETTINGS: MySQLSettings = MySQLSettings()
