@@ -1,0 +1,108 @@
+{% extends "layouts/page.html" %}
+
+{% block content %}
+
+<section id="main-content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title font-weight-bold text-info">
+                <i class="fa fa-folder-open"> </i>
+                Covers
+            </h3>
+        </div>
+
+        <ul class="nav nav-tabs" id="companyTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="companyDetails-tab" data-toggle="tab" href="#companyDetails" role="tab" aria-controls="companyDetails" aria-selected="true">
+                    <span class="font-weight-bold text-info">
+                        <i class="fa fa-folder"> </i>
+                        Active Covers
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="createPlan-tab" data-toggle="tab" href="#createPlan" role="tab" aria-controls="createPlan" aria-selected="false">
+                    <span class="font-weight-bold text-info">
+                        <i class="fa fa-folder"> </i>
+                        Create Plan
+                    </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" id="addBranch-tab" data-toggle="tab" href="#addBranch" role="tab" aria-controls="addBranch" aria-selected="false">
+                    <span class="font-weight-bold text-info">
+                        <i class="fa fa-folder"> </i>
+                            Reports
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+
+
+            <div class="tab-content" id="companyTabsContent">
+                <div class="tab-pane fade show active" id="companyDetails" role="tabpanel" aria-labelledby="companyDetails-tab">
+                    <!-- Company Details Tab Content -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title font-weight-bold text-info">
+                                <i class="fa fa-folder-open-o"> </i>
+                                Active Covers
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td class="font-weight-bold text-info">Plan Number</td>
+                                        <td class="font-weight-bold text-info">Plan Name</td>
+                                        <td class="font-weight-bold text-info">Plan Type</td>
+                                        <td class="font-weight-bold text-info">Coverage</td>
+                                        <td class="font-weight-bold text-info">Premium</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for plan in cover_details %}
+                                        <tr>
+                                            <td class="font-weight-bold">
+                                                <a class="text-info" href="{{ url_for('covers.get_plan_cover', company_id=plan.company_id, plan_number=plan.plan_number) }}">
+                                                    {{ plan.plan_number }}
+                                                </a>
+                                            </td>
+                                            <td class="font-weight-bold">{{ plan.plan_name| title }}</td>
+                                            <td class="font-weight-bold">{{ plan.plan_type| title }}</td>
+                                            <td>R {{ plan.coverage_amount| number }}.00</td>
+                                            <td>R {{ plan.premium_costs| number }}.00</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="createPlan" role="tabpanel" aria-labelledby="createPlan-tab">
+                    <!-- Add Company Branch Tab Content -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Create Plan</h3>
+                        </div>
+                        <div class="card-body">
+                          {% include "admin/managers/covers/cover_form.html" %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="addBranch" role="tabpanel" aria-labelledby="addBranch-tab">
+                    <!-- Add Company Branch Tab Content -->
+
+                </div>
+            </div>
+    </div>
+
+</section>
+
+{% endblock %}
+
