@@ -84,7 +84,6 @@ async def do_password_reset():
     flash(message="Message with a link to reset your password has been sent", category='success')
     return render_template('index.html', **context)
 
-
 @auth_route.get('/register')
 async def get_register():
     context = {}
