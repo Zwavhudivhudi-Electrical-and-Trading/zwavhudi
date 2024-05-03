@@ -3,7 +3,7 @@ from src.config import config_instance
 import threading
 
 # Create the Flask app, chat_io, and message_loop
-app, chat_io, message_controller = create_app(config=config_instance())
+app = create_app(config=config_instance())
 
 #
 # def run_message_loop():
