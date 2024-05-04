@@ -26,9 +26,16 @@ async def get_cart(user: User | None):
 @cart_route.get("/orders")
 @user_details
 async def get_orders(user: User | None):
-    customer_details = await customer_controller.get_customer_details(customer_id=user.customer_id)
-    temp_orders = await customer_controller.get_temp_order(customer_id=user.customer_id)
     social_url = url_for('cart.get_orders', _external=True)
+    context = dict(user=user, social_url=social_url)
+    customer_details = await customer_controller.get_customer_details(customer_id=user.customer_id)
+    if customer_details:
+        context.update(customer_details=customer_details)
+
+    temp_orders = await customer_controller.get_temp_order(customer_id=user.customer_id)
+    if temp_orders:
+        context.update(orders=temp_orders)
+
     context = dict(user=user, social_url=social_url, customer=customer_details, orders=temp_orders)
     return render_template('orders/orders.html', **context)
 
