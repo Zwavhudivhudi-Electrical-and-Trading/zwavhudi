@@ -132,7 +132,7 @@ def create_policy_number():
     return random_chars_uppercase
 
 
-def create_employee_id():
+def create_customer_id():
     random_chars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     random_chars_uppercase = random_chars.upper()
     return random_chars_uppercase

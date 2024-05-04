@@ -1,6 +1,7 @@
 from enum import Enum
 from datetime import date as Date
 from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -13,11 +14,6 @@ class InventoryEntryReasons(Enum):
     REFUND = "Refund"
 
 
-class Category(BaseModel):
-    """Product category"""
-    category_id: int
-    name: str
-    description: str
 
 
 class InventoryEntries(BaseModel):
@@ -89,7 +85,7 @@ class Product(BaseModel):
             if start_date <= entry.entry_date <= stop_date
         )
 
-    def total_stock_value_in_date_range(self, start_date: Date, stop_date: Date):
+    def total_stock_in_value_in_date_range(self, start_date: Date, stop_date: Date):
         """
 
         :param start_date:
@@ -98,6 +94,25 @@ class Product(BaseModel):
         """
         return sum(
             entry.stock_value for entry in self.inventory_entries
-            if start_date <= entry.entry_date <= stop_date
+            if (start_date <= entry.entry_date <= stop_date) and entry.is_stock_in
         )
 
+    def total_stock_out_value_in_date_range(self, start_date: Date, stop_date: Date):
+        """
+
+        :param start_date:
+        :param stop_date:
+        :return:
+        """
+        return sum(
+            entry.stock_value for entry in self.inventory_entries
+            if (start_date <= entry.entry_date <= stop_date) and not entry.is_stock_in
+        )
+
+
+class Category(BaseModel):
+    """Product category"""
+    category_id: int
+    name: str
+    description: str
+    products_list: list[Product]

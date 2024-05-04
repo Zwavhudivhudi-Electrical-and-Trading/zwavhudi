@@ -4,6 +4,7 @@ from enum import Enum
 from pydantic import BaseModel, Field, Extra
 
 from src.main import encryptor
+from src.utils import create_customer_id
 
 
 class UserType(str, Enum):
@@ -28,8 +29,7 @@ class User(BaseModel):
     - contact_number (str): The contact number of the user.
     """
     uid: str
-    branch_id: str | None
-    company_id: str | None
+    customer_id: str = Field(default_factory=create_customer_id)
     username: str | None
     password_hash: str
     email: str

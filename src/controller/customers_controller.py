@@ -1,13 +1,12 @@
 from flask import Flask
 from sqlalchemy.exc import OperationalError
 
-from src.database.models.customers import CustomerDetails
-from src.database.sql.customer import CustomerDetailsORM
 from src.controller import Controllers, error_handler
-from src.database.models.bank_accounts import BankAccount
 from src.database.models.contacts import Address, PostalAddress, Contacts
-from src.database.sql.bank_account import BankAccountORM
+from src.database.models.customers import CustomerDetails
+from src.database.models.orders import Order, OrderStatus, OrderItem
 from src.database.sql.contacts import AddressORM, PostalAddressORM, ContactsORM
+from src.database.sql.customer import CustomerDetailsORM
 
 
 class CustomerController(Controllers):
@@ -28,8 +27,63 @@ class CustomerController(Controllers):
             "Zambia", "Zimbabwe"
         ]
 
+        self.temp_cart_items: dict[str: list[Order]] = {}
+
     def init_app(self, app: Flask):
         super().init_app(app=app)
+
+    async def add_order(self, order: Order):
+        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(order.customer_id, [])
+        order_merged = False
+        if not temp_orders_list:
+            self.temp_cart_items[order.customer_id] = [order]
+        else:
+            for temp_order in temp_orders_list:
+                if temp_order.status == OrderStatus.INCOMPLETE.value:
+                    for item_ordered in order.items_ordered:
+                        temp_order.items_ordered.append(item_ordered)
+                        order_merged = True
+                    break
+            if not order_merged:
+                temp_orders_list.append(order)
+                self.temp_cart_items[order.customer_id] = temp_orders_list
+
+    async def add_items_to_order(self, customer_id: str, order_id: str, order_item: OrderItem):
+        """
+
+        :param customer_id:
+        :param order_id:
+        :param order_item:
+        :return:
+        """
+        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
+        for order in list(temp_orders_list):
+            if order.order_id == order_id:
+                order.items_ordered.append(order_item)
+                temp_orders_list.remove(order)
+                temp_orders_list.append(order)
+        self.temp_cart_items[customer_id] = temp_orders_list
+
+    async def remove_items_from_order(self, customer_id: str, order_id: str, item_id: str):
+        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
+        for order in list(temp_orders_list):
+            if order.order_id == order_id:
+                new_items_ordered = []
+                for item_ordered in order.items_ordered:
+                    if not (item_ordered.item_id == item_id):
+                        new_items_ordered.append(item_ordered)
+                order.items_ordered = new_items_ordered
+                temp_orders_list.remove(order)
+                temp_orders_list.append(order)
+
+        self.temp_cart_items[customer_id] = temp_orders_list
+
+    async def remove_order_from_temp(self, order: Order):
+        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(order.customer_id, [])
+        for order_ in list(temp_orders_list):
+            if order_ == order:
+                temp_orders_list.remove(order)
+                self.temp_cart_items[order.customer_id] = temp_orders_list
 
     async def add_personal_details(self, customer_details: CustomerDetails):
         with self.get_session() as session:

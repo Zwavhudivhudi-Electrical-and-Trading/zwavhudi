@@ -9,6 +9,7 @@ def create_date() -> str:
 
 
 class OrderStatus(Enum):
+    INCOMPLETE = "Incomplete"
     PENDING = 'Pending'
     PROCESSING = 'Processing'
     SHIPPED = 'Shipped'
@@ -24,6 +25,9 @@ class OrderItem(BaseModel):
     price: int
     quantity: int
     discount_percent: int
+
+    def __eq__(self, other):
+        return (self.item_id == other.item_id) and (self.order_id == other.order_id)
 
     @property
     def total_price(self) -> int:
@@ -44,9 +48,12 @@ class Order(BaseModel):
     phone: str
     address_id: str
     order_datetime: str = Field(default_factory=create_date)
-    status: str = Field(default="Pending")
+    status: str = Field(default=OrderStatus.INCOMPLETE.value)
 
     items_ordered: list[OrderItem]
+
+    def __eq__(self, other):
+        return (self.order_id == other.order_id) and (self.customer_id == other.customer_id)
 
     @property
     def total_price(self) -> int:

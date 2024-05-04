@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from src.utils import string_today, create_employee_id
+from src.utils import string_today, create_customer_id
 
 
 class Employee:
@@ -21,15 +21,15 @@ class CustomerDetails(BaseModel):
     Customer Details
     """
 
-    customer_id: str = Field(default_factory=create_employee_id)
-
-    uid: str | None
+    customer_id: str
+    uid: str
 
     full_names: str
     surname: str
-    id_number: str
+
     email: str
     contact_number: str
+
     date_joined: str = Field(default_factory=string_today)
     is_active: bool = Field(default=True)
 
