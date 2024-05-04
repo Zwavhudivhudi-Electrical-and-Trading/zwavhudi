@@ -69,7 +69,8 @@ async def place_orders(user: User, product_id: str):
                                                                                   order_item=order_item)
         else:
             # TODO - redirect to customer details captcha
-            pass
+            flash(message="Please Enter Customer Details", category="danger")
+            return redirect(url_for('cart.get_orders'))
 
     flash(message="Order Successfully Captured", category="success")
     return redirect(url_for('cart.get_cart'))
