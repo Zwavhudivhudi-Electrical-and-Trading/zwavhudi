@@ -11,7 +11,11 @@
                     </div>
                     <li class="label">Main</li>
                     <li><a href="{{ url_for('home.get_home') }}"><i class="ti-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('home.get_about') }}"><i class="fa fa-info-circle"></i> About</a></li>
+                    <li><a href="{{ url_for('cart.get_cart') }}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                    <li><a href="{{ url_for('cart.get_orders') }}"><i class="fa fa-shopping-cart"></i> Orders</a></li>
 
+                    <li><a href="{{ url_for('home.get_contact') }}"><i class="fa fa-envelope"></i> Contact</a></li>
                     {% if user %}
                         <li><a href="{{ url_for('auth.do_logout')}}"><i class="ti-power-off"></i> Logout</a></li>
                     {% else %}

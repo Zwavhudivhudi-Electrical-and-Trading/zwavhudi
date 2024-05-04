@@ -10,17 +10,22 @@ home_route = Blueprint('home', __name__)
 @home_route.get("/")
 @user_details
 async def get_home(user: User | None):
-
     social_url = url_for('home.get_home', _external=True)
     context = dict(user=user, social_url=social_url)
     return render_template('index.html', **context)
 
 
-@home_route.get("/")
+@home_route.get("/about")
 @user_details
 async def get_about(user: User | None):
-
     social_url = url_for('home.get_home', _external=True)
     context = dict(user=user, social_url=social_url)
     return render_template('about.html', **context)
 
+
+@home_route.get("/contact")
+@user_details
+async def get_contact(user: User | None):
+    social_url = url_for('home.get_home', _external=True)
+    context = dict(user=user, social_url=social_url)
+    return render_template('contact.html', **context)
