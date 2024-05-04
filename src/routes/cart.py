@@ -1,5 +1,8 @@
-from flask import Blueprint, render_template, url_for, redirect, flash
+from flask import Blueprint, render_template, url_for, redirect, flash, request
 
+from src.database.models.orders import Order, OrderItem
+from src.database.models.customers import CustomerDetails
+from src.main import customer_controller, product_controller
 from src.routes import product_test_values
 from src.database.models.products import Product, InventoryEntries, InventoryEntryReasons
 from src.authentication import user_details, login_required
@@ -23,20 +26,39 @@ async def get_cart(user: User | None):
 @cart_route.get("/orders")
 @user_details
 async def get_orders(user: User | None):
-    customer = {
-        "first_name": "joe"
-    }
-
+    customer_details = await customer_controller.get_customer_details(customer_id=user.customer_id)
+    temp_orders = await customer_controller.get_temp_order(customer_id=user.customer_id)
     social_url = url_for('cart.get_orders', _external=True)
-    context = dict(user=user, social_url=social_url, customer=customer)
+    context = dict(user=user, social_url=social_url, customer=customer_details, orders=temp_orders)
     return render_template('orders/orders.html', **context)
 
 
 @cart_route.post("/orders/<string:product_id>")
 @login_required
 async def place_orders(user: User, product_id: str):
-    #TOD Capture Order Details Here
-    # social_url = url_for('cart.get_orders', _external=True)
-    # context = dict(user=user, social_url=social_url)
+    order_quantity = request.form.get('quantity')
+
+    if user.customer_id:
+        customer_details: CustomerDetails = await customer_controller.get_customer_details(customer_id=user.customer_id)
+        product_details: Product = await product_controller.get_product(product_id=product_id)
+        customer_name = f"{customer_details.full_names} {customer_details.surname}"
+        email = customer_details.email if customer_details.email else user.email
+
+        temp_order = await customer_controller.get_temp_order(customer_id=user.customer_id)
+        if not temp_order:
+            temp_order = Order(customer_id=user.customer_id, customer_name=customer_name, email=email,
+                               phone=customer_details.contact_number, address_id=customer_details.delivery_address_id,
+                               items_ordered=[])
+
+            saved_temp_order = await customer_controller.add_temp_order(order=temp_order)
+
+        order_item = OrderItem(order_id=temp_order.order_id, product_id=product_id,
+                               product_name=product_details.name, price=product_details.price,
+                               quantity=order_quantity)
+
+        add_items_ordered = await customer_controller.add_items_to_temp_order(customer_id=user.customer_id,
+                                                                              order_id=temp_order.order_id,
+                                                                              order_item=order_item)
+
     flash(message="Order Successfully Captured", category="success")
     return redirect(url_for('cart.get_cart'))

@@ -187,12 +187,13 @@ class UserController(Controllers):
         :return:
         """
         with self.get_session() as session:
+
             user_data: UserORM = session.query(UserORM).filter(or_(UserORM.uid == user.uid,
                                                                    UserORM.email == user.email)).first()
             if user_data:
                 return None
-
-            new_user: UserORM = UserORM(**user.to_dict())
+            user_ = User(**user.to_dict())
+            new_user: UserORM = UserORM(**user_.dict())
             session.add(new_user)
             new_user_dict = new_user.to_dict()
             session.commit()

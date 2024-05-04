@@ -41,9 +41,6 @@ class User(BaseModel):
     is_employee: bool = Field(default=False)
     is_client: bool = Field(default=False)
 
-    class Config:
-        orm_mode = True
-
     def __bool__(self) -> bool:
         return bool(self.uid) and bool(self.username) and bool(self.password_hash)
 

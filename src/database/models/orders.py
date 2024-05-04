@@ -24,7 +24,7 @@ class OrderItem(BaseModel):
     product_name: str
     price: int
     quantity: int
-    discount_percent: int
+    discount_percent: int = Field(default=0)
 
     def __eq__(self, other):
         return (self.item_id == other.item_id) and (self.order_id == other.order_id)

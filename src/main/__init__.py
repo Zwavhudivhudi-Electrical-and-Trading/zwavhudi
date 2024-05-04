@@ -15,7 +15,7 @@ from src.controller.orders_controller import  OrdersController
 from src.controller.paypal_controller import PayPalController
 from src.controller.chat_controller import ChatController
 from src.controller.messaging_controller import MessagingController
-
+from src.controller.product_controller import ProductController
 # from src.firewall import Firewall
 
 user_controller = UserController()
@@ -24,6 +24,7 @@ orders_controller = OrdersController()
 paypal_controller = PayPalController()
 chat_controller = ChatController()
 messaging_controller = MessagingController()
+product_controller = ProductController()
 
 chat_io = SocketIO()
 
@@ -64,6 +65,7 @@ def create_app(config):
         customer_controller.init_app(app=app)
         orders_controller.init_app(app=app)
         paypal_controller.init_app(app=app, config_instance=config)
+        product_controller.init_app(app=app)
         # chat_controller.init_app(app=app)
         # messaging_controller.init_app(app=app)
 

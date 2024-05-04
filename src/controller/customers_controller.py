@@ -32,7 +32,7 @@ class CustomerController(Controllers):
     def init_app(self, app: Flask):
         super().init_app(app=app)
 
-    async def add_order(self, order: Order):
+    async def add_temp_order(self, order: Order):
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(order.customer_id, [])
         order_merged = False
         if not temp_orders_list:
@@ -48,7 +48,12 @@ class CustomerController(Controllers):
                 temp_orders_list.append(order)
                 self.temp_cart_items[order.customer_id] = temp_orders_list
 
-    async def add_items_to_order(self, customer_id: str, order_id: str, order_item: OrderItem):
+    async def get_temp_order(self, customer_id: str):
+        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
+        if temp_orders_list:
+            return temp_orders_list[0]
+
+    async def add_items_to_temp_order(self, customer_id: str, order_id: str, order_item: OrderItem):
         """
 
         :param customer_id:
@@ -64,7 +69,7 @@ class CustomerController(Controllers):
                 temp_orders_list.append(order)
         self.temp_cart_items[customer_id] = temp_orders_list
 
-    async def remove_items_from_order(self, customer_id: str, order_id: str, item_id: str):
+    async def remove_items_from_temp_order(self, customer_id: str, order_id: str, item_id: str):
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
         for order in list(temp_orders_list):
             if order.order_id == order_id:
@@ -85,7 +90,7 @@ class CustomerController(Controllers):
                 temp_orders_list.remove(order)
                 self.temp_cart_items[order.customer_id] = temp_orders_list
 
-    async def add_personal_details(self, customer_details: CustomerDetails):
+    async def add_customer_details(self, customer_details: CustomerDetails):
         with self.get_session() as session:
             # Query the database for the customer details
             customer_orm = session.query(CustomerDetailsORM).filter_by(customer_id=customer_details.customer_id).first()
@@ -121,6 +126,13 @@ class CustomerController(Controllers):
                 session.add(customer_orm)
             session.commit()
             return customer_details
+
+    async def get_customer_details(self, customer_id: str) -> CustomerDetails | None:
+        with self.get_session() as session:
+            customer_orm = session.query(CustomerDetailsORM).filter_by(customer_id=customer_id).first()
+            if isinstance(customer_orm, CustomerDetailsORM):
+                return CustomerDetails(**customer_orm.to_dict())
+            return None
 
     @error_handler
     async def add_update_address(self, address: Address) -> Address | None:

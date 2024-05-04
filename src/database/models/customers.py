@@ -32,7 +32,7 @@ class CustomerDetails(BaseModel):
 
     date_joined: str = Field(default_factory=string_today)
     is_active: bool = Field(default=True)
-
+    delivery_address_id: str | None
     address_id: str | None
     contact_id: str | None
     postal_id: str | None

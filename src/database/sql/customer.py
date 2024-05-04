@@ -1,22 +1,24 @@
-from sqlalchemy import Column, String, inspect, Integer, Boolean, JSON, Date, Text
+from sqlalchemy import Column, String, inspect, Boolean
 
-from src.database.constants import ID_LEN, NAME_LEN, SHORT_DESCRIPTION_lEN
+from src.database.constants import ID_LEN, NAME_LEN
 from src.database.sql import Base, engine
-from src.utils import string_today
 
 
 class CustomerDetailsORM(Base):
     __tablename__ = "customer_details"
     customer_id = Column(String(ID_LEN), primary_key=True)
     uid = Column(String(ID_LEN))
+
     full_names = Column(String(NAME_LEN))
+    surname = Column(String(NAME_LEN))
+
     email = Column(String(255))
     contact_number = Column(String(18))
-    address = Column(String(255))
+
     date_joined = Column(String(36))
 
     is_active = Column(Boolean)
-
+    delivery_address_id = Column(String(ID_LEN))
     address_id = Column(String(ID_LEN))
     contact_id = Column(String(ID_LEN))
     postal_id = Column(String(ID_LEN))
@@ -40,9 +42,11 @@ class CustomerDetailsORM(Base):
             'customer_id': self.customer_id,
             'uid': self.uid,
             'full_names': self.full_names,
+            'surname': self.surname,
             'email': self.email,
             'contact_number': self.contact_number,
-            'address': self.address,
+            'delivery_address_id': self.delivery_address_id,
+
             'date_joined': self.date_joined,
             'is_active': self.is_active,
             'address_id': self.address_id,
