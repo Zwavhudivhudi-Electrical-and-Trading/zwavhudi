@@ -29,19 +29,6 @@ chat_io = SocketIO()
 
 
 # firewall = Firewall()
-def _add_blue_prints(app: Flask):
-    """
-        this function adds blueprints
-    :param app:
-    :return:
-    """
-    from src.routes.home import home_route
-    from src.routes.auth import auth_route
-    from src.routes.cart import cart_route
-
-    routes = [auth_route, home_route, cart_route]
-    for route in routes:
-        app.register_blueprint(route)
 
 
 def _add_filters(app: Flask):
@@ -65,11 +52,12 @@ def create_app(config):
 
     with app.app_context():
         from src.main.bootstrapping import bootstrapper
+        from src.routes import register_routes
         bootstrapper()
         # firewall.init_app(app=app)
-
-        _add_blue_prints(app)
+        register_routes(app=app)
         _add_filters(app)
+
         encryptor.init_app(app=app)
         chat_io.init_app(app)
         user_controller.init_app(app=app)

@@ -4,13 +4,13 @@ from sqlalchemy.orm import relationship
 
 from src.database.constants import ID_LEN, NAME_LEN
 from src.database.sql import Base, engine
-from sqlalchemy import Column, Integer, String, DateTime, inspect
+from sqlalchemy import Column, Integer, String, DateTime, inspect, ForeignKey
 
 
 class OrderItemORM(Base):
     __tablename__ = "order_item"
     item_id: str = Column(String(ID_LEN), primary_key=True)
-    order_id: str = Column(String(ID_LEN))
+    order_id = Column(String(ID_LEN), ForeignKey('orders.order_id'))
     product_id: str = Column(String(ID_LEN))
     product_name: str = Column(String(NAME_LEN))
     price: int = Column(Integer)
@@ -54,7 +54,7 @@ class OrderORM(Base):
     order_datetime = Column(String(32))
     status = Column(String(32))
     # Define relationship
-    items_ordered = relationship("OrderItems", back_populates="order")
+    items_ordered = relationship("OrderItemORM", back_populates="order")
 
     @classmethod
     def create_if_not_table(cls):

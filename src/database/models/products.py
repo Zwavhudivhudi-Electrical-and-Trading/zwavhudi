@@ -13,13 +13,18 @@ class Product(BaseModel):
     product_id: int
     name: str
     description: str
+    img_link: str
     price: int
     category_id: int
 
 
-class Inventory(BaseModel):
+class InventoryEntries(BaseModel):
     """Inventory of products"""
-
+    entry_id: str
     product_id: int
-    quantity: int
+    add: int
+    subtract: int
+    entry_datetime: str
+    reason: str
+
 

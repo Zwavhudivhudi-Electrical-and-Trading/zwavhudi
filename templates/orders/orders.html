@@ -1,13 +1,81 @@
-
 {% extends "layouts/page.html" %}
 
 {% block content %}
 {% include "layouts/social.html" %}
 <section id="main-content">
     <div class="card">
-
+        <div class="card-header">
+            <h3 class="card-title font-weight-bold text-info">
+                <i class="fa fa-shopping-cart"></i>
+                Place Your Order
+            </h3>
+        </div>
+        <div class="card-body">
+            <form id="orderForm" method="POST" action="/place_order">
+                <div class="form-group">
+                    <label for="customerName">Your Name:</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Delivery Address:</label>
+                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                </div>
+                <hr>
+                <h4>Order Details:</h4>
+                <div id="orderItems">
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="text" class="form-control" name="productName[]" placeholder="Product Name" required>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="quantity[]" placeholder="Quantity" required>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="price[]" placeholder="Price" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary mt-3" id="addItemBtn">Add Item</button>
+                <button type="submit" class="btn btn-success mt-3">Place Order</button>
+            </form>
+        </div>
     </div>
 
+    <!-- View Previous Orders Section -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3 class="card-title font-weight-bold text-info">
+                <i class="fa fa-history"></i>
+                Previous Orders
+            </h3>
+        </div>
+        <div class="card-body">
+            <!-- Display previous orders here -->
+            <p>No previous orders found.</p>
+        </div>
+    </div>
+
+    <!-- View Current Orders Section -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3 class="card-title font-weight-bold text-info">
+                <i class="fa fa-list-alt"></i>
+                Current Orders
+            </h3>
+        </div>
+        <div class="card-body">
+            <!-- Display current orders here -->
+            <p>No current orders found.</p>
+        </div>
+    </div>
 </section>
 
 {% endblock %}
