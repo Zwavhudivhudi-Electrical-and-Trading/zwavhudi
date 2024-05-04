@@ -10,7 +10,8 @@ encryptor = Encryptor()
 send_mail = SendMail()
 
 from src.controller.auth import UserController
-from src.controller.company_controller import CompanyController
+from src.controller.customers_controller import CustomerController
+from src.controller.orders_controller import  OrdersController
 from src.controller.paypal_controller import PayPalController
 from src.controller.chat_controller import ChatController
 from src.controller.messaging_controller import MessagingController
@@ -18,7 +19,8 @@ from src.controller.messaging_controller import MessagingController
 # from src.firewall import Firewall
 
 user_controller = UserController()
-company_controller = CompanyController()
+customer_controller = CustomerController()
+orders_controller = OrdersController()
 paypal_controller = PayPalController()
 chat_controller = ChatController()
 messaging_controller = MessagingController()
@@ -71,7 +73,8 @@ def create_app(config):
         encryptor.init_app(app=app)
         chat_io.init_app(app)
         user_controller.init_app(app=app)
-        company_controller.init_app(app=app)
+        customer_controller.init_app(app=app)
+        orders_controller.init_app(app=app)
         paypal_controller.init_app(app=app, config_instance=config)
         # chat_controller.init_app(app=app)
         # messaging_controller.init_app(app=app)

@@ -6,7 +6,7 @@ from sqlalchemy.exc import OperationalError, ProgrammingError, IntegrityError
 
 from src.database.sql import Session
 from src.logger import init_logger
-
+from contextlib import contextmanager
 error_logger = init_logger("error_logger")
 
 
@@ -20,6 +20,23 @@ class Controllers:
     def __init__(self, session_maker=Session):
         self.sessions = [session_maker() for _ in range(self.session_limit)]
         self.logger = init_logger(self.__class__.__name__)
+    #
+    # @contextmanager
+    # def get_session(self):
+    #     if self.sessions:
+    #         session = self.sessions.pop()
+    #     else:
+    #         self.sessions = [Session() for _ in range(self.session_limit)]
+    #         session = self.sessions.pop()
+    #
+    #     try:
+    #         yield session
+    #         session.commit()
+    #     except Exception as e:
+    #         session.rollback()
+    #         raise e
+    #     finally:
+    #         session.close()
 
     def get_session(self) -> Session:
         if self.sessions:
