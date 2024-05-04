@@ -13,7 +13,7 @@
 
         <div class="card-body">
             <div class="card-header">
-                <h3 class="card-title">Products Inventory</h3>
+                <h3 class="card-title font-weight-bold">Inventory</h3>
             </div>
             <div class="card-body">
                 <div class="row flex-row">
@@ -27,7 +27,7 @@
                                 <img alt="{{ product.name }}" src="{{ url_for('static', filename=product.img_link) }}" class="img-fluid">
                             </div>
                             <div class="card-footer">
-                                <span>Price : {{ product.price }}</span>
+                                <span class="font-weight-bold text-info">Price : R {{ product.price| number }}.00</span>
                             </div>
                         </div>
                     {% endfor %}
