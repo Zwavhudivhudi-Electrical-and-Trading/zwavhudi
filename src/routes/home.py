@@ -29,3 +29,13 @@ async def get_contact(user: User | None):
     social_url = url_for('home.get_home', _external=True)
     context = dict(user=user, social_url=social_url)
     return render_template('contact.html', **context)
+
+
+@home_route.post("/contact")
+@user_details
+async def get_contact(user: User | None):
+    flash(message="Message successfully sent we will get back to you as soon as possible", category="success")
+    social_url = url_for('home.get_home', _external=True)
+    context = dict(user=user, social_url=social_url)
+    return render_template('contact.html', **context)
+
