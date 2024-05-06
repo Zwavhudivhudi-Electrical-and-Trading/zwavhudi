@@ -43,9 +43,9 @@
                     {% for item in order.items_ordered %}
                     <tr>
                         <td>{{ item.product_name }}</td>
-                        <td>{{ item.price }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.total_price }}</td>
+                        <td>R {{ item.price| number }}.00</td>
+                        <td>{{ item.quantity| number }}</td>
+                        <td>R {{ item.total_price| number }}.00</td>
                     </tr>
                     {% endfor %}
                 </tbody>
