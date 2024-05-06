@@ -25,7 +25,7 @@
                             </div>
                             <div class="card-content">
                                 <span>{{ product.description }}</span>
-                                <img alt="{{ product.name }}" src="{{ product.img_link }}" class="img-fluid">
+                                <img alt="{{ product.name }}" src="{{ url_for('static', filename=product.img_link) }}" class="img-fluid">
                             </div>
                             <div class="card-footer">
                                 <span class="font-weight-bold text-dark">Price : <span class="font-italic text-info">R {{ product.sale_price| number }}.00</span></span>
