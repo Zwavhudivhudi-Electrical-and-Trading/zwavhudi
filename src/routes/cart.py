@@ -9,7 +9,7 @@ from src.authentication import user_details, login_required
 from src.database.models.users import User
 
 cart_route = Blueprint('cart', __name__)
-
+from pprint import pprint
 
 @cart_route.get("/shopping-cart")
 @user_details
@@ -68,7 +68,7 @@ async def place_orders(user: User, product_id: str):
             customer_name = f"{customer_details.full_names} {customer_details.surname}"
             email = customer_details.email if customer_details.email else user.email
 
-            temp_order = await customer_controller.get_temp_orders(customer_id=user.customer_id)
+            temp_order = await customer_controller.get_temp_order(customer_id=user.customer_id)
 
             if not temp_order:
                 temp_order = Order(customer_id=user.customer_id, customer_name=customer_name, email=email,
@@ -83,12 +83,17 @@ async def place_orders(user: User, product_id: str):
                                    product_name=product_detail.name,
                                    price=product_detail.sale_price,
                                    quantity=order_quantity)
-
-            add_items_ordered = await customer_controller.add_items_to_temp_order(customer_id=user.customer_id,
-                                                                                  order_id=temp_order.order_id,
-                                                                                  order_item=order_item)
+            temp_order.items_ordered.append(order_item)
+            add_temp_order = await customer_controller.add_temp_order(order=temp_order)
+            # add_items_ordered = await customer_controller.add_items_to_temp_order(customer_id=user.customer_id,
+            #                                                                       order_id=temp_order.order_id,
+            #                                                                       order_item=order_item)
+            for order_item in add_temp_order[-1].items_ordered:
+                pprint(order_item)
+                pprint('-----------------------------------------------------------------------')
+            # pprint(f"order: {add_temp_order[-1]}")
         else:
-            # TODO - redirect to customer details captcha
+
             flash(message="Please Enter Customer Details", category="danger")
             return redirect(url_for('cart.get_orders'))
 

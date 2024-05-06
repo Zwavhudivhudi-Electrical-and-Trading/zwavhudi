@@ -38,15 +38,13 @@ class CustomerController(Controllers):
         if not temp_orders_list:
             self.temp_cart_items[order.customer_id] = [order]
         else:
-            for temp_order in temp_orders_list.copy():
-                if temp_order.status == OrderStatus.INCOMPLETE.value:
-                    for item_ordered in order.items_ordered:
-                        temp_order.items_ordered.append(item_ordered)
-                        order_merged = True
+            for order_ in temp_orders_list.copy():
+                if order_.order_id == order.order_id:
+                    temp_orders_list.remove(order_)
+                    temp_orders_list.append(order)
+                    self.temp_cart_items[order.customer_id] = temp_orders_list
                     break
-            if not order_merged:
-                temp_orders_list.append(order)
-                self.temp_cart_items[order.customer_id] = temp_orders_list
+        return self.temp_cart_items[order.customer_id]
 
     async def get_temp_orders(self, customer_id: str) -> list[Order]:
         """
@@ -56,6 +54,16 @@ class CustomerController(Controllers):
         :return:
         """
         return self.temp_cart_items.get(customer_id, [])
+
+    async def get_temp_order(self, customer_id: str) -> Order:
+        """
+
+        :param customer_id:
+        :return:
+        """
+        if self.temp_cart_items.get(customer_id, []):
+            return self.temp_cart_items.get(customer_id, [])[-1]
+        return None
 
     async def add_items_to_temp_order(self, customer_id: str, order_id: str, order_item: OrderItem):
         """
@@ -68,10 +76,11 @@ class CustomerController(Controllers):
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
         for order in temp_orders_list.copy():
             if order.order_id == order_id:
-                order.items_ordered.append(order_item)
                 temp_orders_list.remove(order)
+                order.items_ordered.append(order_item)
                 temp_orders_list.append(order)
         self.temp_cart_items[customer_id] = temp_orders_list
+        return temp_orders_list
 
     async def remove_items_from_temp_order(self, customer_id: str, order_id: str, item_id: str):
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
