@@ -1,6 +1,7 @@
 from flask import Flask
 from sqlalchemy.exc import OperationalError
 
+from src.database.sql.orders import OrderORM
 from src.controller import Controllers, error_handler
 from src.database.models.contacts import Address, PostalAddress, Contacts
 from src.database.models.customers import CustomerDetails
@@ -65,7 +66,7 @@ class CustomerController(Controllers):
             return self.temp_cart_items.get(customer_id, [])[-1]
         return None
 
-    async def get_order_by_order_id(self,  customer_id: str, order_id: str):
+    async def get_order_by_order_id(self, customer_id: str, order_id: str):
         """
 
         :param customer_id:
@@ -76,8 +77,6 @@ class CustomerController(Controllers):
         for order in orders_list:
             if order.order_id == order_id:
                 return order
-
-
 
     async def add_items_to_temp_order(self, customer_id: str, order_id: str, order_item: OrderItem):
         """
@@ -317,3 +316,26 @@ class CustomerController(Controllers):
     @error_handler
     async def get_countries(self):
         return self.countries
+
+    async def store_order_to_database(self, order: Order) -> Order:
+        """
+
+        :param order:
+        :return:
+        """
+        with self.get_session() as session:
+            order_orm = session.query(OrderORM).filter_by(order_id=order.order_id).first()
+            if isinstance(order_orm, OrderORM):
+                order_orm.customer_name = order.customer_name
+                order_orm.email = order.email
+                order_orm.phone = order.phone
+                order_orm.address_id = order.address_id
+                order_orm.order_datetime = order.order_datetime
+                order_orm.status = order.status
+            else:
+                order_rm = OrderORM(**order.dict())
+                session.add(order_rm)
+
+            session.commit()
+
+            return order

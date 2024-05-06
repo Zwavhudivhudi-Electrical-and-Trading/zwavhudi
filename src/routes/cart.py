@@ -230,6 +230,7 @@ async def finalize_order(user: User, order_id: str):
     customer = await customer_controller.get_customer_details(customer_id=user.customer_id)
     order = await customer_controller.get_order_by_order_id(customer_id=user.customer_id, order_id=order_id)
     order = Order(**order.dict())
+    _stored_order = await customer_controller.store_order_to_database(order=order)
     context = dict(user=user, order=order, customer=customer)
 
     if customer.postal_id and customer.delivery_address_id == customer.postal_id:
