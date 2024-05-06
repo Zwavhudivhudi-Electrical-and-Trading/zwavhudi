@@ -2,7 +2,8 @@ from enum import Enum
 from datetime import date as Date
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from src.utils import create_category_id, create_product_id
 
 
 class InventoryEntryReasons(Enum):
@@ -14,12 +15,10 @@ class InventoryEntryReasons(Enum):
     REFUND = "Refund"
 
 
-
-
 class InventoryEntries(BaseModel):
     """Inventory of products"""
     entry_id: str
-    product_id: int
+    product_id: str
     amount: int
     entry_datetime: str
     reason: str
@@ -57,8 +56,8 @@ class InventoryEntries(BaseModel):
 
 class Product(BaseModel):
     """Product being sold"""
-    category_id: int
-    product_id: int
+    category_id: str = Field(default_factory=create_category_id)
+    product_id: str
     name: str
     description: str
     img_link: str
@@ -112,7 +111,8 @@ class Product(BaseModel):
 
 class Category(BaseModel):
     """Product category"""
-    category_id: int
+    category_id: str = Field(default_factory=create_category_id)
     name: str
     description: str
-    products_list: list[Product]
+    img_link: str | None
+    products_list: list[Product | None] = Field(default_factory=list)

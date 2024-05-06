@@ -46,7 +46,7 @@ class Order(BaseModel):
     customer_name: str
     email: str
     phone: str
-    address_id: str
+    address_id: str | None
     order_datetime: str = Field(default_factory=create_date)
     status: str = Field(default=OrderStatus.INCOMPLETE.value)
 

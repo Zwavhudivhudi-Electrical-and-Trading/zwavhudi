@@ -138,5 +138,16 @@ def create_customer_id():
     return random_chars_uppercase
 
 
+def create_category_id():
+    random_chars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    random_chars_uppercase = random_chars.upper()
+    return random_chars_uppercase
+def create_product_id():
+    random_chars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    random_chars_uppercase = random_chars.upper()
+    return random_chars_uppercase
+
+
+
 def string_today():
     return str(datetime.today().date())

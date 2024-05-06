@@ -42,26 +42,38 @@
                     </div>
                 </div>
             {% else %}
-                <form id="orderForm" method="POST" action="/place_order">
-                    <div class="form-group">
-                        <label for="customerName">Your Name:</label>
-                        <input type="text" class="form-control" id="customerName" name="customerName" required>
-                    </div>
+                <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title font-weight-bold text-info">
+                        <i class="fa fa-user"></i>
+                        Customer Details
+                    </h3>
+                </div>
+                    <form id="customer_details" method="POST" action="{{ url_for('cart.capture_customer_details') }}">
+                        <div class="form-group">
+                            <label for="customerName" class="font-weight-bold">Your Name:</label>
+                            <input type="text" class="form-control" id="full_names" name="full_names" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="surname" class="font-weight-bold">Surname:</label>
+                            <input type="text" class="form-control" id="surname" name="surname" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="email" class="font-weight-bold">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="phone">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" required>
-                    </div>
-                    <button type="submit" class="btn btn-success mt-3">
-                        <i class="fa fa-user-circle"> </i>
-                        Add Customer Details
-                    </button>
-                </form>
+                        <div class="form-group">
+                            <label for="contact_number" class="font-weight-bold">Phone Number:</label>
+                            <input type="tel" class="form-control" id="contact_number" name="contact_number" required>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">
+                            <i class="fa fa-user-circle"> </i>
+                            Customer Details
+                        </button>
+                    </form>
+                </div>
 
             {% endif %}
 

@@ -18,6 +18,7 @@ class CustomerDetailsORM(Base):
     date_joined = Column(String(36))
 
     is_active = Column(Boolean)
+
     delivery_address_id = Column(String(ID_LEN))
     address_id = Column(String(ID_LEN))
     contact_id = Column(String(ID_LEN))

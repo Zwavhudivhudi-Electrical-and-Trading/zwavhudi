@@ -33,12 +33,12 @@ class CustomerController(Controllers):
         super().init_app(app=app)
 
     async def add_temp_order(self, order: Order):
-        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(order.customer_id, [])
+        temp_orders_list: list[Order] = self.temp_cart_items.get(order.customer_id, [])
         order_merged = False
         if not temp_orders_list:
             self.temp_cart_items[order.customer_id] = [order]
         else:
-            for temp_order in temp_orders_list:
+            for temp_order in temp_orders_list.copy():
                 if temp_order.status == OrderStatus.INCOMPLETE.value:
                     for item_ordered in order.items_ordered:
                         temp_order.items_ordered.append(item_ordered)
@@ -48,10 +48,14 @@ class CustomerController(Controllers):
                 temp_orders_list.append(order)
                 self.temp_cart_items[order.customer_id] = temp_orders_list
 
-    async def get_temp_order(self, customer_id: str):
-        temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
-        if temp_orders_list:
-            return temp_orders_list[0]
+    async def get_temp_orders(self, customer_id: str) -> list[Order]:
+        """
+        **get_temp_order**
+
+        :param customer_id:
+        :return:
+        """
+        return self.temp_cart_items.get(customer_id, [])
 
     async def add_items_to_temp_order(self, customer_id: str, order_id: str, order_item: OrderItem):
         """
@@ -62,7 +66,7 @@ class CustomerController(Controllers):
         :return:
         """
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
-        for order in list(temp_orders_list):
+        for order in temp_orders_list.copy():
             if order.order_id == order_id:
                 order.items_ordered.append(order_item)
                 temp_orders_list.remove(order)
@@ -71,7 +75,7 @@ class CustomerController(Controllers):
 
     async def remove_items_from_temp_order(self, customer_id: str, order_id: str, item_id: str):
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(customer_id, [])
-        for order in list(temp_orders_list):
+        for order in temp_orders_list.copy():
             if order.order_id == order_id:
                 new_items_ordered = []
                 for item_ordered in order.items_ordered:
@@ -85,66 +89,83 @@ class CustomerController(Controllers):
 
     async def remove_order_from_temp(self, order: Order):
         temp_orders_list: Order | list[Order] = self.temp_cart_items.get(order.customer_id, [])
-        for order_ in list(temp_orders_list):
+        for order_ in temp_orders_list.copy():
             if order_ == order:
                 temp_orders_list.remove(order)
                 self.temp_cart_items[order.customer_id] = temp_orders_list
 
+    # noinspection DuplicatedCode
     async def add_customer_details(self, customer_details: CustomerDetails):
         with self.get_session() as session:
             # Query the database for the customer details
             customer_orm = session.query(CustomerDetailsORM).filter_by(customer_id=customer_details.customer_id).first()
+
             if customer_orm:
                 # Update the existing customer details
+
+                customer_orm.customer_id = customer_details.customer_id
                 customer_orm.uid = customer_details.uid
+
                 customer_orm.full_names = customer_details.full_names
+                customer_orm.surname = customer_details.surname
                 customer_orm.email = customer_details.email
                 customer_orm.contact_number = customer_details.contact_number
 
                 customer_orm.date_joined = customer_details.date_joined
                 customer_orm.is_active = customer_details.is_active
+
                 customer_orm.address_id = customer_details.address_id
                 customer_orm.contact_id = customer_details.contact_id
                 customer_orm.postal_id = customer_details.postal_id
                 customer_orm.bank_account_id = customer_details.bank_account_id
+
             else:
                 # Create a new customer entry
-                customer_orm = CustomerDetailsORM(
-                    customer_id=customer_details.customer_id,
-                    uid=customer_details.uid,
-                    full_names=customer_details.full_names,
-                    email=customer_details.email,
-                    contact_number=customer_details.contact_number,
-
-                    date_joined=customer_details.date_joined,
-                    is_active=customer_details.is_active,
-                    address_id=customer_details.address_id,
-                    contact_id=customer_details.contact_id,
-                    postal_id=customer_details.postal_id,
-                    bank_account_id=customer_details.bank_account_id
-                )
                 session.add(customer_orm)
+
+            customer_orm = CustomerDetailsORM(
+                customer_id=customer_details.customer_id,
+                uid=customer_details.uid,
+                full_names=customer_details.full_names,
+                surname=customer_details.surname,
+                email=customer_details.email,
+                contact_number=customer_details.contact_number,
+
+                date_joined=customer_details.date_joined,
+                is_active=customer_details.is_active,
+
+                address_id=customer_details.address_id,
+                contact_id=customer_details.contact_id,
+                postal_id=customer_details.postal_id,
+                bank_account_id=customer_details.bank_account_id
+            )
             session.commit()
             return customer_details
 
     async def get_customer_details(self, customer_id: str) -> CustomerDetails | None:
         with self.get_session() as session:
-            customer_orm = session.query(CustomerDetailsORM).filter_by(customer_id=customer_id).first()
+            customer_orm: CustomerDetailsORM = session.query(
+                CustomerDetailsORM).filter_by(customer_id=customer_id).first()
+
             if isinstance(customer_orm, CustomerDetailsORM):
                 return CustomerDetails(**customer_orm.to_dict())
             return None
 
+    # noinspection DuplicatedCode
     @error_handler
     async def add_update_address(self, address: Address) -> Address | None:
         """
+        **add_update_address**
 
         :param address:
         :return:
         """
         with self.get_session() as session:
-            branch_address_orm = session.query(AddressORM).filter_by(address_id=address.address_id).first()
+
+            branch_address_orm: AddressORM = session.query(AddressORM).filter_by(address_id=address.address_id).first()
 
             if isinstance(branch_address_orm, AddressORM):
+
                 if address.street:
                     branch_address_orm.street = address.street
                 if address.city:
@@ -153,6 +174,7 @@ class CustomerController(Controllers):
                     branch_address_orm.state_province = address.state_province
                 if address.postal_code:
                     branch_address_orm.postal_code = address.postal_code
+
                 session.commit()
                 return address
             try:
@@ -171,6 +193,7 @@ class CustomerController(Controllers):
                 return Address(**branch_address.to_dict())
             return None
 
+    # noinspection DuplicatedCode
     @error_handler
     async def add_postal_address(self, postal_address: PostalAddress) -> PostalAddress | None:
         """
@@ -214,6 +237,7 @@ class CustomerController(Controllers):
                 return PostalAddress(**postal_address_orm.to_dict())
             return None
 
+    # noinspection DuplicatedCode
     @error_handler
     async def add_contacts(self, contact: Contacts) -> Contacts | None:
         """

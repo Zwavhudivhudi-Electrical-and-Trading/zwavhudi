@@ -75,6 +75,7 @@ class CategoryORM(Base):
     category_id = Column(String(ID_LEN), primary_key=True)
     name = Column(String(255))
     description = Column(String(255))
+    img_link = Column(String(255))
     products_list = relationship('ProductsORM', backref='category')
 
     @classmethod
@@ -92,5 +93,6 @@ class CategoryORM(Base):
             'category_id': self.category_id,
             'name': self.name,
             'description': self.description,
+            'img_link': self.img_link,
             'products_list': [product.to_dict() for product in self.products_list]  # Include products_list
         }
