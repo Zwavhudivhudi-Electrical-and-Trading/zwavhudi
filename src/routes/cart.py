@@ -44,7 +44,7 @@ async def get_category_products(user: User | None, category_name: str):
 
 
 @cart_route.get("/orders")
-@user_details
+@login_required
 async def get_orders(user: User | None):
     social_url = url_for('cart.get_orders', _external=True)
     country_list = await customer_controller.get_countries()
@@ -178,6 +178,7 @@ async def edit_order(user: User, order_id: str):
     context = dict(user=user, order=order)
     return render_template('orders/modals/edit.html', **context)
 
+
 @cart_route.post("/customer/order/edit/<string:order_id>")
 @login_required
 async def update_order(user: User, order_id: str):
@@ -207,7 +208,6 @@ async def update_order(user: User, order_id: str):
     context = dict(user=user, order=order)
 
     return render_template('orders/modals/edit.html', **context)
-
 
 
 @cart_route.get("/customer/order/view/<string:order_id>")
