@@ -178,7 +178,7 @@ async def edit_order(user: User, order_id: str):
     context = dict(user=user, order=order)
     return render_template('orders/modals/edit.html', **context)
 
-@cart_route.get("/customer/order/edit/<string:order_id>")
+@cart_route.post("/customer/order/edit/<string:order_id>")
 @login_required
 async def update_order(user: User, order_id: str):
     """
@@ -187,8 +187,22 @@ async def update_order(user: User, order_id: str):
     :param order_id:
     :return:
     """
+    print(request.form)
+    updated_quantities = {}
+    for key, value in request.form.items():
+        if key.startswith('quantity_'):
+            item_id = key.replace('quantity_', '')
+            updated_quantities[item_id] = int(value)
 
     order: Order = await customer_controller.get_temp_order(customer_id=user.customer_id)
+
+    # Update quantities in the order
+    for item in order.items_ordered:
+        if item.item_id in updated_quantities:
+            item.quantity = updated_quantities[item.item_id]
+    updated_order = await customer_controller.add_temp_order(order=order)
+    if updated_order:
+        order = updated_order[-1]
     context = dict(user=user, order=order)
     return render_template('orders/modals/edit.html', **context)
 
