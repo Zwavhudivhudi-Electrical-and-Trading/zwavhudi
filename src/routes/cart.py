@@ -12,6 +12,7 @@ from src.database.models.users import User
 cart_route = Blueprint('cart', __name__)
 from pprint import pprint
 
+
 @cart_route.get("/shopping-cart")
 @user_details
 async def get_cart(user: User | None):
@@ -163,7 +164,7 @@ async def update_delivery_address(user: User):
     return redirect(url_for('cart.get_orders'))
 
 
-@cart_route.post("/customer/order/<string:order_id>")
+@cart_route.get("/customer/order/edit/<string:order_id>")
 @login_required
 async def edit_order(user: User, order_id: str):
     """
@@ -172,3 +173,42 @@ async def edit_order(user: User, order_id: str):
     :param order_id:
     :return:
     """
+
+    order: Order = await customer_controller.get_temp_order(customer_id=user.customer_id)
+    context = dict(user=user, order=order)
+    return render_template('orders/modals/edit.html', **context)
+
+@cart_route.get("/customer/order/edit/<string:order_id>")
+@login_required
+async def update_order(user: User, order_id: str):
+    """
+
+    :param user:
+    :param order_id:
+    :return:
+    """
+
+    order: Order = await customer_controller.get_temp_order(customer_id=user.customer_id)
+    context = dict(user=user, order=order)
+    return render_template('orders/modals/edit.html', **context)
+
+
+
+@cart_route.get("/customer/order/view/<string:order_id>")
+@login_required
+async def get_order(user: User, order_id: str):
+    """
+
+    :param user:
+    :param order_id:
+    :return:
+    """
+    pass
+
+
+@cart_route.get("/customer/order/finalize/<string:order_id>")
+@login_required
+async def finalize_order(use: User, order_id: str):
+    """
+    """
+    pass

@@ -102,25 +102,7 @@
                 </div>
 
             {% endif %}
-{##}
-{#            <form id="orderForm" method="POST" action="/place_order">#}
-{#                <h4>Order Items:</h4>#}
-{#                <div id="orderItems">#}
-{#                    <div class="form-row">#}
-{#                        <div class="col">#}
-{#                            <input type="text" class="form-control" name="productName[]" placeholder="Product Name" required>#}
-{#                        </div>#}
-{#                        <div class="col">#}
-{#                            <input type="number" class="form-control" name="quantity[]" placeholder="Quantity" required>#}
-{#                        </div>#}
-{#                        <div class="col">#}
-{#                            <input type="number" class="form-control" name="price[]" placeholder="Price" required>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <a href="{{ url_for('cart.get_cart') }}" type="button" class="btn btn-primary mt-3" id="addItemBtn">Add Item</a>#}
-{#                <button type="submit" class="btn btn-success mt-3">Place Order</button>#}
-{#            </form>#}
+
         </div>
     </div>
 
@@ -148,11 +130,12 @@
                 <tbody>
                     {% for order in current_orders %}
                     <tr>
-                        <td>{{ order.order_id }}</td>
+                        <td><a href="{{ url_for('cart.get_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">{{ order.order_id }}</a></td>
                         <td>{{ order.order_datetime }}</td>
                         <td>{{ order.status }}</td>
                         <td>
-                            <a href="{{ url_for('cart.edit_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">Finalize</a>
+                            <a href="{{ url_for('cart.edit_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{{ url_for('cart.finalize_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">Finalize</a>
                         </td>
                     </tr>
                     {% endfor %}
