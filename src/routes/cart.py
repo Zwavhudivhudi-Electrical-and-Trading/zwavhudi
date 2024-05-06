@@ -231,5 +231,13 @@ async def finalize_order(user: User, order_id: str):
     order = await customer_controller.get_order_by_order_id(customer_id=user.customer_id, order_id=order_id)
     context = dict(user=user, order=order, customer=customer)
 
+    if customer.postal_id and customer.delivery_address_id == customer.postal_id:
+        postal_address = await  customer_controller.get_postal_address(postal_id=customer.postal_id)
+        context.update(address=postal_address)
+    elif customer.address_id and customer.delivery_address_id == customer.address_id:
+        physical_address = await customer_controller.get_address(address_id=customer.address_id)
+        context.update(address=physical_address)
+    else:
+        context.update(address={})
     return render_template('orders/modals/quotation.html', **context)
 

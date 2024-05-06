@@ -13,9 +13,13 @@
             <!-- Customer Details -->
             <div class="mb-4">
                 <h5>Customer Details:</h5>
-                <p><strong>Name:</strong> {{ customer.name }}</p>
+                <p><strong>Name:</strong> {{ customer.full_names }}</p>
+                <p><strong>Surname:</strong> {{ customer.surname }}</p>
                 <p><strong>Email:</strong> {{ customer.email }}</p>
-                <p><strong>Address:</strong> {{ customer.address }}</p>
+                <p><strong>Contact:</strong> {{ customer.contact_number }}</p>
+                {% if address %}
+                    <p><strong>Delivery Address:</strong> {{ address.address_line_1 }}</p>
+                {% endif %}
             </div>
 
             <!-- Order Items -->
