@@ -20,12 +20,20 @@
             <!-- Customer Details -->
             <div class="mb-4">
                 <h5>Customer:</h5>
-                <p><strong>Name:</strong> {{ customer.full_names }}</p>
-                <p><strong>Surname:</strong> {{ customer.surname }}</p>
-                <p><strong>Email:</strong> {{ customer.email }}</p>
-                <p><strong>Contact:</strong> {{ customer.contact_number }}</p>
+            <ol>
+                <li><strong>Name:</strong> {{ customer.full_names | title  }}</li>
+                <li><strong>Surname:</strong> {{ customer.surname | title  }}</li>
+                <li><strong>Email:</strong> {{ customer.email }}</li>
+                <li><strong>Contact:</strong> {{ customer.contact_number }}</li>
+            </ol>
                 {% if address %}
-                    <p><strong>Delivery Address:</strong> {{ address.address_line_1 }}</p>
+                    <ol>
+                        <li><strong>Delivery Address:</strong> {{ address.address_line_1 }}</li>
+                        <li>{{ address.town_city | title }}</li>
+                        <li>{{ address.province | title  }}</li>
+                        <li>{{ address.country | title  }}</li>
+                        <li>{{ address.postal_code }}</li>
+                    </ol>
                 {% endif %}
             </div>
 
