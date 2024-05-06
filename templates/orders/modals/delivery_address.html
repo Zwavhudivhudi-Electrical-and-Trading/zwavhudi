@@ -1,0 +1,57 @@
+<div class="modal fade" id="addDeliveryAddress" tabindex="-1" role="dialog" aria-labelledby="addDeliveryAddressLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="addDeliveryAddressLabel"> <i class="ti ti-folder"> </i>Delivery Address </h2>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="#" method="POST">
+
+                    <div class="form-group">
+                        <label for="addressType" class="font-weight-bold">Address Type</label>
+                        <select class="form-control" id="addressType" name="addressType">
+                            <option value="" disabled selected>Select Address Type</option>
+                            <option value="postal">Postal Address</option>
+                            <option value="physical">Physical Address</option>
+                        </select>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        <label for="address_line_1" class="font-weight-bold">Address Line 1</label>
+                        <input type="text" class="form-control" id="address_line_1" name="address_line_1" placeholder="Address Line 1" />
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="font-weight-bold">City</label>
+                        <input type="text" class="form-control" id="city" name="city" placeholder="City" />
+                    </div>
+                    <div class="form-group">
+                        <label for="province" class="font-weight-bold">Province</label>
+                        <input type="text" class="form-control" id="province" name="province" placeholder="Province" />
+                    </div>
+                    <div class="form-group">
+                        <label for="country" class="font-weight-bold">Country</label>
+                        <select class="form-control" name="country" id="country">
+                            <option value="" selected disabled>Select Country</option>
+                            {% for country in country_list %}
+                                <option value="{{ country }}">{{ country }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postal_code" class="font-weight-bold">Postal Code</label>
+                        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Postal Code" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"> </i>
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -45,12 +45,12 @@ async def get_category_products(user: User | None, category_name: str):
 @user_details
 async def get_orders(user: User | None):
     social_url = url_for('cart.get_orders', _external=True)
-
+    country_list = await customer_controller.get_countries()
     customer_details = await customer_controller.get_customer_details(customer_id=user.customer_id)
 
     temp_orders: list[Order] = await customer_controller.get_temp_orders(customer_id=user.customer_id)
 
-    context = dict(user=user, social_url=social_url, customer=customer_details, orders=temp_orders)
+    context = dict(user=user, country_list=country_list, social_url=social_url, customer=customer_details, orders=temp_orders)
     return render_template('orders/orders.html', **context)
 
 

@@ -18,26 +18,39 @@
                     </div>
                     <div class="card-body">
                         <ul>
-                            <li class="font-weight-bold text-info">First Names</li>
-                            <li class="font-weight-bold text-info">Surname</li>
-                            <li class="font-weight-bold text-info">Cell</li>
-                            <li class="font-weight-bold text-info">Address
-                                <ol>
-                                    <li class="font-weight-bold text-info">Postal Address</li>
-                                    <li class="font-weight-bold text-info">Box / Private Bag: </li>
-                                    <li class="font-weight-bold text-info">Town / City: </li>
-                                    <li class="font-weight-bold text-info">Province: </li>
-                                    <li class="font-weight-bold text-info">Postal Code: </li>
-                                </ol>
-                                <ol>
-                                    <li class="font-weight-bold text-info">Physical Address</li>
-                                    <li class="font-weight-bold text-info">Box / Private Bag: </li>
-                                    <li class="font-weight-bold text-info">Town / City: </li>
-                                    <li class="font-weight-bold text-info">Province: </li>
-                                    <li class="font-weight-bold text-info">Postal Code: </li>
-                                </ol>
-
-                            </li>
+                            <li class="font-weight-bold text-info m-t-8">First Names : {{ customer.full_names }}</li>
+                            <li class="font-weight-bold text-info m-t-8">Surname: {{ customer.surname }}</li>
+                            <li class="font-weight-bold text-info m-t-8">Cell: {{ customer.contact_number }}</li>
+                            {% if customer.delivery_address_id %}
+                                <li class="font-weight-bold text-info">Delivery Address
+                                    {% if postal_address %}
+                                    <ol>
+                                        <li class="font-weight-bold text-info">Postal Address </li>
+                                        <li class="font-weight-bold text-info">Box / Private Bag: {{ postal_address.address_line_1 }}</li>
+                                        <li class="font-weight-bold text-info">Town / City: {{ postal_address.town_city }}</li>
+                                        <li class="font-weight-bold text-info">Province: {{ postal_address.province }}</li>
+                                        <li class="font-weight-bold text-info">Postal Code: {{ postal_address.postal_code }}</li>
+                                    </ol>
+                                    {% endif %}
+                                    {% if physical_address %}
+                                    <ol>
+                                        <li class="font-weight-bold text-info">Physical Address</li>
+                                        <li class="font-weight-bold text-info">Street: {{ physical_address.street }}</li>
+                                        <li class="font-weight-bold text-info">Town / City: {{ physical_address.city }}</li>
+                                        <li class="font-weight-bold text-info">Province: {{ physical_address.state_province }}</li>
+                                        <li class="font-weight-bold text-info">Postal Code: {{ physical_address.postal_code }}</li>
+                                        <li class="font-weight-bold text-info">Country: {{ physical_address.country }}</li>
+                                    </ol>
+                                    {% endif %}
+                                </li>
+                            {% else %}
+                                 <li class="m-t-12">
+                                    <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addDeliveryAddress">
+                                        <i class="fa fa-car"> </i>
+                                        Add Delivery Address
+                                    </a>
+                                 </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -128,3 +141,6 @@
 </section>
 
 {% endblock %}
+
+
+{% include "orders/modals/delivery_address.html" %}
