@@ -369,7 +369,7 @@ class CustomerController(Controllers):
                 <p>Website : https://dreamland-chemicals.org</p>
         """
         email = EmailModel(to_=email_address,
-                           subject="Dreamland Cleaning Chemicals Invoice",
+                           subject_="Dreamland Cleaning Chemicals Invoice",
                            html_=html)
         await send_mail.send_mail_resend(email=email)
         return email
