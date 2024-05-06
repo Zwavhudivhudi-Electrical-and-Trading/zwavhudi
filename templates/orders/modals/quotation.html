@@ -28,7 +28,8 @@
             </ol>
                 {% if address %}
                     <ol>
-                        <li><strong>Delivery Address:</strong> {{ address.address_line_1 }}</li>
+                        <li><strong>Delivery Address:</strong> </li>
+                        <li>{{ address.address_line_1 }}</li>
                         <li>{{ address.town_city | title }}</li>
                         <li>{{ address.province | title  }}</li>
                         <li>{{ address.country | title  }}</li>
