@@ -232,6 +232,8 @@ async def finalize_order(user: User, order_id: str):
     order = Order(**order.dict())
     # _stored_order = await customer_controller.store_order_to_database(order=order)
     context = dict(user=user, order=order, customer=customer)
+    email_sent = await customer_controller.email_invoice(email_address="mobiusndou@gmail.com", order=order)
+    print(email_sent)
 
     if customer.postal_id and customer.delivery_address_id == customer.postal_id:
         postal_address = await  customer_controller.get_postal_address(postal_id=customer.postal_id)
