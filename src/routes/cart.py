@@ -203,7 +203,9 @@ async def update_order(user: User, order_id: str):
     updated_order = await customer_controller.add_temp_order(order=order)
     if updated_order:
         order = updated_order[-1]
+    flash(message="Order Updated", category="success")
     context = dict(user=user, order=order)
+
     return render_template('orders/modals/edit.html', **context)
 
 
