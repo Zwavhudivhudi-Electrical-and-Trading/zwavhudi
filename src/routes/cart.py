@@ -21,8 +21,24 @@ async def get_cart(user: User | None):
     products_list: list[Product] = await product_controller.get_products()
     categories_list: list[Category] = await product_controller.get_categories()
 
-    context = dict(user=user, social_url=social_url, categories_list=categories_list, products_list=products_list, customer=customer_details)
+    context = dict(user=user, social_url=social_url, category_list=categories_list, products_list=products_list,
+                   customer=customer_details)
     return render_template('cart/cart.html', **context)
+
+
+@cart_route.get("/shopping-cart/category/<string:category_name>")
+@user_details
+async def get_category_products(user: User | None, category_name: str):
+    """
+
+    :param user:
+    :param category_name:
+    :return:
+    """
+    category_details = await product_controller.get_category_details(category_name=category_name)
+    products_list = await product_controller.get_category_products(category_id=category_details.category_id)
+    context = dict(user=user, category=category_details, products_list=products_list)
+    return render_template('cart/includes/category_products.html', **context)
 
 
 @cart_route.get("/orders")
