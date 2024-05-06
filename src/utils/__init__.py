@@ -147,6 +147,10 @@ def create_product_id():
     random_chars_uppercase = random_chars.upper()
     return random_chars_uppercase
 
+def create_order_number():
+    random_chars = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    random_chars_uppercase = random_chars.upper()
+    return random_chars_uppercase
 
 
 def string_today():

@@ -119,6 +119,7 @@ class CustomerController(Controllers):
                 customer_orm.surname = customer_details.surname
                 customer_orm.email = customer_details.email
                 customer_orm.contact_number = customer_details.contact_number
+                customer_orm.delivery_address_id = customer_details.delivery_address_id
 
                 customer_orm.date_joined = customer_details.date_joined
                 customer_orm.is_active = customer_details.is_active
@@ -185,6 +186,7 @@ class CustomerController(Controllers):
                     address_orm.postal_code = address.postal_code
                 if address.country:
                     address_orm.country = address.country
+
                 session.commit()
                 return address
             try:
@@ -227,10 +229,10 @@ class CustomerController(Controllers):
                     postal_orm.country = postal_address.country
                 if postal_address.postal_code:
                     postal_orm.postal_code = postal_address.postal_code
-                session.commit()
-                return postal_address
+            else:
+                postal_orm = PostalAddressORM(**postal_address.dict())
+                session.add(postal_orm)
 
-            session.add(PostalAddressORM(**postal_address.dict()))
             session.commit()
             return postal_address
 

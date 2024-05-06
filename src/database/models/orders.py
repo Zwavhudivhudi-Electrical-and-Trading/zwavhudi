@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 from datetime import datetime
-from src.utils import create_id
+from src.utils import create_order_number
 
 
 def create_date() -> str:
@@ -41,7 +41,7 @@ class OrderItem(BaseModel):
 
 
 class Order(BaseModel):
-    order_id: str = Field(default_factory=create_id)
+    order_id: str = Field(default_factory=create_order_number)
     customer_id: str
     customer_name: str
     email: str

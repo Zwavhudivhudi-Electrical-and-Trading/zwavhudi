@@ -51,16 +51,19 @@ async def get_orders(user: User | None):
 
     temp_orders: list[Order] = await customer_controller.get_temp_orders(customer_id=user.customer_id)
 
-    context = dict(user=user, country_list=country_list, social_url=social_url, customer=customer_details,
-                   orders=temp_orders)
+    context = dict(user=user,
+                   country_list=country_list,
+                   social_url=social_url,
+                   customer=customer_details,
+                   current_orders=temp_orders)
 
     if customer_details.postal_id and customer_details.postal_id == customer_details.delivery_address_id:
-        postal_address = await customer_details.get_postal_address(address_id=customer_details.postal_id)
-        context.update(postal_address=postal_address)
+        postal_address = await customer_controller.get_postal_address(postal_id=customer_details.postal_id)
+        context.update(edit_address=postal_address, postal_address=postal_address, address_type="postal")
         print(f"Postal Address : {postal_address}")
     elif customer_details.address_id and customer_details.address_id == customer_details.delivery_address_id:
-        physical_address = await customer_details.get_address(address_id=customer_details.address_id)
-        context.update(physical_address=physical_address)
+        physical_address = await customer_controller.get_address(address_id=customer_details.address_id)
+        context.update(edit_address=physical_address, physical_address=physical_address, address_type="physical")
         print(f"Physical Address : {physical_address}")
     else:
         print(f"Why : {customer_details}")
@@ -144,18 +147,28 @@ async def update_delivery_address(user: User):
         print(f"Setting postal Address: {postal_address}")
         update_postal_address = await customer_controller.add_postal_address(postal_address=postal_address)
 
-        customer_details.postal_id = update_postal_address.postal_id
-        customer_details.delivery_address_id = update_postal_address.postal_id
+        customer_details.postal_id = postal_address.postal_id
+        customer_details.delivery_address_id = postal_address.postal_id
     else:
         physical_address = Address(**request.form)
         print(f"Setting physical Address: {physical_address}")
         update_physical_address = await customer_controller.add_update_address(address=physical_address)
 
-        customer_details.address_id = update_physical_address.address_id
-        customer_details.delivery_address_id = update_physical_address.address_id
-
+        customer_details.address_id = physical_address.address_id
+        customer_details.delivery_address_id = physical_address.address_id
+    print(f"customer details: {customer_details}")
     customer_details_ = await customer_controller.add_customer_details(customer_details=customer_details)
 
     flash(message="Successfully Updated Delivery Address Details", category="success")
     return redirect(url_for('cart.get_orders'))
 
+
+@cart_route.post("/customer/order/<string:order_id>")
+@login_required
+async def edit_order(user: User, order_id: str):
+    """
+
+    :param user:
+    :param order_id:
+    :return:
+    """
