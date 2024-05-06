@@ -196,7 +196,7 @@ class ProductController(Controllers):
         filename = f"{product_name.lower().strip()}.{ext}"
         print(f"filename : {filename}")
         with self.get_session() as session:
-            category_detail: CategoryORM = session.query(CategoryORM).filter_by(categori_id=category_id).first()
+            category_detail: CategoryORM = session.query(CategoryORM).filter_by(category_id=category_id).first()
 
             img_link = category_detail.img_link
             category_location = img_link

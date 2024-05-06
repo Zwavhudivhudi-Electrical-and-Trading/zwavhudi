@@ -111,18 +111,24 @@ async def add_category_product(user: User, category_id: str):
     """
     try:
         product_detail = Product(**request.form, category_id=category_id)
+        image = request.files.get('image')
         if await check_if_name_is_invalid(name=product_detail.name):
             flash(message="You cannot name your product: {product_detail.name}", category="danger")
             return redirect(url_for('admin.get_categories'))
-
+        print(f"Product Detail: {product_detail}")
     except ValidationError as e:
         print(str(e))
         flash(message="Please include all product details", category="danger")
         return redirect(url_for('admin.get_categories'))
+
     # TODO - add product image first
-    image_link = await product_controller.add_product_image(category_id=category_id, product_name=product_detail.name)
+    image_link = await product_controller.add_product_image(category_id=category_id, product_name=product_detail.name, image=image)
     product_detail.img_link = image_link
+    print(f"Updated Product Detail: {product_detail}")
     product = await product_controller.add_category_product(category_id=category_id, product=product_detail)
+
+    flash(message="Successfully Added your product to category", category="success")
+    return redirect(url_for('admin.get_categories'))
 
 
 @admin_route.get('/admin/messages')
