@@ -227,8 +227,9 @@ async def get_order(user: User, order_id: str):
 async def finalize_order(user: User, order_id: str):
     """
     """
+    customer = await customer_controller.get_customer_details(customer_id=user.customer_id)
     order = await customer_controller.get_order_by_order_id(customer_id=user.customer_id, order_id=order_id)
-    context = dict(user=user, order=order)
+    context = dict(user=user, order=order, customer=customer)
 
     return render_template('orders/modals/quotation.html', **context)
 
