@@ -81,7 +81,7 @@ async def place_orders(user: User, product_id: str):
             order_item = OrderItem(order_id=temp_order.order_id,
                                    product_id=product_id,
                                    product_name=product_detail.name,
-                                   price=product_detail.price,
+                                   price=product_detail.sale_price,
                                    quantity=order_quantity)
 
             add_items_ordered = await customer_controller.add_items_to_temp_order(customer_id=user.customer_id,
