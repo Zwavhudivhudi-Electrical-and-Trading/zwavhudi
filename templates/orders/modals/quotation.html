@@ -61,10 +61,11 @@
 
             <!-- Payment Details -->
             <div class="mt-4 pull-right">
-                <h5>Payment Details:</h5>
-                <p><strong>Sub Total:</strong> R {{ order.total_price| number }}.00</p>
-                <p><strong>Discount:</strong> R {{ order.total_discount| number }}.00</p>
-                <p><strong>Total: </strong> R {{ (order.total_price - order.total_discount) | number }}.00</p>
+                <ol>
+                    <li class="font-weight-bold m-t-2"><strong>Sub Total:</strong> R {{ order.total_price| number }}.00</li>
+                    <li  class="font-weight-bold m-t-2"><strong>Discount:</strong> R {{ order.total_discount| number }}.00</li>
+                    <li  class="font-weight-bold m-t-2"><strong>Total: </strong> R {{ (order.total_price - order.total_discount) | number }}.00</li>
+                </ol>
             </div>
 
         </div>
