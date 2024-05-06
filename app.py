@@ -13,7 +13,7 @@ app = create_app(config=config_instance())
 # # Start the message loop in a separate thread
 # message_thread = threading.Thread(target=run_message_loop, daemon=True)
 # message_thread.start()
-
+123
 if __name__ == '__main__':
     # Run the Flask app
     app.run(debug=True, port=8001)
