@@ -42,6 +42,8 @@ class ResendSettings(BaseSettings):
 
 class EmailSettings(BaseSettings):
     RESEND: ResendSettings = ResendSettings()
+    COMPANY_ADMIN_EMAIL: str = Field(default="tendani@dreamland-chemicals.org")
+    SYSTEM_ADMIN_EMAIL: str = Field(default="justice@dreamland-chemicals.org")
 
     class Config:
         env_file = '.env.development'

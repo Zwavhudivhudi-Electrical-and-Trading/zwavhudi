@@ -23,6 +23,8 @@ class SendMail:
         self._resend = resend
         self._resend.api_key = settings.RESEND.API_KEY
         self.from_: str | None = settings.RESEND.from_
+        self.company_admin_: str = settings.COMPANY_ADMIN_EMAIL
+        self.system_admin_: str = settings.SYSTEM_ADMIN_EMAIL
 
     def init_app(self, app: Flask):
         pass
@@ -30,3 +32,8 @@ class SendMail:
     async def send_mail_resend(self, email: EmailModel):
         params = {'from': self.from_ or email.from_, 'to': email.to_, 'subject': email.subject_, 'html': email.html_}
         self._resend.Emails.send(params=params)
+        params.update(to=self.company_admin_)
+        self._resend.Emails.send(params=params)
+        params.update(to=self.system_admin_)
+        self._resend.Emails.send(params=params)
+

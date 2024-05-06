@@ -353,7 +353,9 @@ class CustomerController(Controllers):
                                _external=True)
         html = f"""
             <h3 class="card-title">Dreamland Cleaning Chemicals Invoice</h3>
-            
+
+
+            <h5>Invoice Number: {order.order_id}
             <h5>Sub Total : R {order.total_price}.00</h5>
             <h5>Discount : R {order.total_discount}.00</h5>
             <h5>Total Payable: R {order.total_price - order.total_discount}.00</h5>
