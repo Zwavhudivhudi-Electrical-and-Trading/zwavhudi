@@ -58,7 +58,10 @@ class Order(BaseModel):
     @property
     def total_price(self) -> int:
         """Calculate total price of the order"""
-        return sum(item.total_price for item in self.items_ordered)
+        return sum(item.price for item in self.items_ordered)
+    @property
+    def total_discount(self) -> int:
+        return sum(item.total_discount for item in self.items_ordered)
 
     @property
     def quantity(self) -> int:
