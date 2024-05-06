@@ -45,7 +45,8 @@ class ProductsORM(Base):
     name = Column(String(255))
     description = Column(Text)
     img_link = Column(String(255))
-    price = Column(Integer)
+    cost_price = Column(Integer)
+    sale_price = Column(Integer)
     inventory_entries = relationship('InventoryEntriesORM', backref='product')  # Relationship with InventoryEntriesORM
 
     @classmethod
@@ -65,7 +66,8 @@ class ProductsORM(Base):
             'name': self.name,
             'description': self.description,
             'img_link': self.img_link,
-            'price': self.price,
+            'cost_price': self.cost_price,
+            'sale_price': self.sale_price,
             'inventory_entries': [entry.to_dict() for entry in self.inventory_entries]  # Include inventory_entries
         }
 

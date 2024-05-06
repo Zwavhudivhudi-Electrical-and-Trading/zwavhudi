@@ -112,8 +112,8 @@ class ProductController(Controllers):
             category_orm = session.query(CategoryORM).filter_by(name=name).first()
 
             if isinstance(category_orm, CategoryORM):
-                category_orm.name = category_detail.name
-                category_orm.description = category_detail.description
+                category_orm.name = category_detail.name.lower().strip()
+                category_orm.description = category_detail.description.lower().strip()
                 category_orm.products_list = category_detail.products_list
                 category_orm.img_link = category_detail.img_link
 
@@ -146,12 +146,66 @@ class ProductController(Controllers):
         image.save(save_file)
         return destination_image_path
 
+    async def get_category_details(self, category_name: str) -> Category | None:
+        """
+
+        :param category_name:
+        :return:
+        """
+        category_name.lower().strip()
+        with self.get_session() as session:
+            category_detail_orm = session.query(CategoryORM).filter_by(name=category_name.casefold()).first()
+            if isinstance(category_detail_orm, CategoryORM):
+                return Category(**category_detail_orm.to_dict())
+
+            return None
+
+    async def get_category_products(self, category_id: str) -> list[Product]:
+        """
+
+        :param category_id:
+        :return:
+        """
+        with self.get_session() as session:
+            products_orm_list = session.query(ProductsORM).filter_by(category_id=category_id).all()
+
+            return [Product(**product_orm.to_dict()) for product_orm in products_orm_list
+                    if isinstance(product_orm, ProductsORM)]
+
+    async def add_category_product(self, category_id: str, product: Product):
+        """
+
+        :param category_id:
+        :param product:
+        :return:
+        """
+        pass
+
+    async def add_product_image(self, category_id: str, product_name: str, image) -> str:
+        """
+
+        :param category_id:
+        :param product_name:
+        :param image:
+        :return:
+        """
+        filename = secure_filename(image.filename)
+        ext_list = filename.split(".")
+        ext = ext_list[-1]
+        ext = ext.lower().strip()
+        filename = f"{product_name.lower().strip()}.{ext}"
+        print(f"filename : {filename}")
+        with self.get_session() as session:
+            category_detail: CategoryORM = session.query(CategoryORM).filter_by(categori_id=category_id).first()
+
+            img_link = category_detail.img_link
+            category_location = img_link
+            category_location = os.path.dirname(img_link)
+            static_folder()
+
+            save_location = os.path.join(static_folder(), category_location, filename)
+            print(f"Save Location : {save_location}")
+            image.save(save_location)
+            return os.path.join(category_location, filename)
 
 
-
-
-"""
-
-<img alt="Tools" src="H:/projects/source/dreamland/src/utils/../../static/images/inventory/tools/tools.png" class="img-fluid">
-
-"""

@@ -56,13 +56,18 @@ class InventoryEntries(BaseModel):
 
 class Product(BaseModel):
     """Product being sold"""
-    category_id: str = Field(default_factory=create_category_id)
-    product_id: str
+    category_id: str
+    product_id: str = Field(default_factory=create_product_id)
     name: str
     description: str
-    img_link: str
-    price: int
-    inventory_entries: list[InventoryEntries]
+    img_link: str | None
+    cost_price: int
+    sale_price: int
+    inventory_entries: list[InventoryEntries] = Field(default_factory=list)
+
+    @property
+    def margin(self):
+        return self.sale_price - self.cost_price
 
     @property
     def total_inventory(self):

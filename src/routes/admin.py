@@ -10,6 +10,15 @@ from src.main import product_controller
 admin_route = Blueprint('admin', __name__)
 
 
+async def check_if_name_is_invalid(name: str):
+    invalid_names = [
+        "category", "categories", "product", "products"
+    ]
+    if name.lower().strip():
+        return name.lower().strip() in invalid_names
+    return False
+
+
 @admin_route.get('/admin/orders')
 @admin_login
 async def get_orders(user: User):
@@ -61,7 +70,9 @@ async def add_product_category(user: User):
     try:
         category_detail = Category(**request.form)
         image = request.files['image']
-        print(category_detail)
+        if await check_if_name_is_invalid(name=category_detail.name):
+            flash(message="Invalid category Name: {category_detail.name}", category="danger")
+            return redirect(url_for('admin.get_categories'))
 
     except ValidationError as e:
         flash(message="Please include all category details", category="danger")
@@ -72,6 +83,46 @@ async def add_product_category(user: User):
 
     flash(message="Category added successfully", category="success")
     return redirect(url_for('admin.get_categories'))
+
+
+@admin_route.get('/admin/<string:category_name>')
+@admin_login
+async def get_category_products(user: User, category_name: str):
+    """
+
+    :param user:
+    :param category_name:
+    :return:
+    """
+    category_details = await product_controller.get_category_details(category_name=category_name)
+    products_list = await product_controller.get_category_products(category_id=category_details.category_id)
+    context = dict(user=user, category=category_details, products_list=products_list)
+    return render_template('admin/products/includes/category_products.html', **context)
+
+
+@admin_route.post('/admin/<string:category_id>/product')
+@admin_login
+async def add_category_product(user: User, category_id: str):
+    """
+
+    :param user:
+    :param category_id:
+    :return:
+    """
+    try:
+        product_detail = Product(**request.form, category_id=category_id)
+        if await check_if_name_is_invalid(name=product_detail.name):
+            flash(message="You cannot name your product: {product_detail.name}", category="danger")
+            return redirect(url_for('admin.get_categories'))
+
+    except ValidationError as e:
+        print(str(e))
+        flash(message="Please include all product details", category="danger")
+        return redirect(url_for('admin.get_categories'))
+    # TODO - add product image first
+    image_link = await product_controller.add_product_image(category_id=category_id, product_name=product_detail.name)
+    product_detail.img_link = image_link
+    product = await product_controller.add_category_product(category_id=category_id, product=product_detail)
 
 
 @admin_route.get('/admin/messages')

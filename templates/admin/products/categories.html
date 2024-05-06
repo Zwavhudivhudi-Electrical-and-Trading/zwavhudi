@@ -31,7 +31,7 @@
                                 <img alt="{{ category.name }}" src="{{ url_for('static', filename=category.img_link| safe ) }}" class="img-fluid">
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-sm btn-primary">Product List</button>
+                                <a href="{{ url_for('admin.get_category_products', category_name=category.name) }}" class="btn btn-sm btn-primary">Product List</a>
                             </div>
                         </div>
                     {% endfor %}
