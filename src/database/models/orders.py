@@ -18,7 +18,7 @@ class OrderStatus(Enum):
 
 
 class OrderItem(BaseModel):
-    item_id: str = Field(default_factory=create_id)
+    item_id: str = Field(default_factory=create_order_number)
     order_id: str
     product_id: str
     product_name: str
