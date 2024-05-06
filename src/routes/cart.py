@@ -224,7 +224,11 @@ async def get_order(user: User, order_id: str):
 
 @cart_route.get("/customer/order/finalize/<string:order_id>")
 @login_required
-async def finalize_order(use: User, order_id: str):
+async def finalize_order(user: User, order_id: str):
     """
     """
-    pass
+    order = await customer_controller.get_order_by_order_id(customer_id=user.customer_id, order_id=order_id)
+    context = dict(user=user, order=order)
+
+    return render_template('orders/modals/quotation.html', **context)
+

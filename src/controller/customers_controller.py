@@ -65,6 +65,20 @@ class CustomerController(Controllers):
             return self.temp_cart_items.get(customer_id, [])[-1]
         return None
 
+    async def get_order_by_order_id(self,  customer_id: str, order_id: str):
+        """
+
+        :param customer_id:
+        :param order_id:
+        :return:
+        """
+        orders_list: list[Order] = self.temp_cart_items[customer_id]
+        for order in orders_list:
+            if order.order_id == order_id:
+                return order
+
+
+
     async def add_items_to_temp_order(self, customer_id: str, order_id: str, order_item: OrderItem):
         """
 
