@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from pydantic import ValidationError
 
-
+from src.authentication import admin_login
 from src.database.models.products import Product, Category
-from src.authentication import user_details, login_required, admin_login
 from src.database.models.users import User
 from src.main import product_controller
 

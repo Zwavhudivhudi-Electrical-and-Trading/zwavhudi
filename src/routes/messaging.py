@@ -4,12 +4,12 @@ from random import randint
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from pydantic import ValidationError
 
-from src.database.models.companies import EmployeeDetails
+
 from src.database.models.messaging import SMSCompose, RecipientTypes, EmailCompose, SMSInbox
-from src.database.models.covers import ClientPersonalInformation
+
 from src.authentication import login_required
 from src.database.models.users import User
-from src.main import company_controller, messaging_controller
+
 
 messaging_route = Blueprint('messaging', __name__)
 

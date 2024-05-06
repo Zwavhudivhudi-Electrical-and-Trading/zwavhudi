@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, url_for, redirect, flash, request
 from src.database.models.orders import Order, OrderItem
 from src.database.models.customers import CustomerDetails
 from src.main import customer_controller, product_controller
-from src.routes import product_test_values
+
 from src.database.models.products import Product, InventoryEntries, InventoryEntryReasons, Category
 from src.authentication import user_details, login_required
 from src.database.models.users import User
