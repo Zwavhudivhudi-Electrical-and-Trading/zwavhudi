@@ -179,7 +179,31 @@ class ProductController(Controllers):
         :param product:
         :return:
         """
-        pass
+        with self.get_session() as session:
+            name = product.name.lower().strip()
+            product_orm = session.query(ProductsORM).filter_by(name=name).first()
+            if isinstance(product_orm, ProductsORM):
+                product_orm.name = name
+                product_orm.category_id = category_id
+                product_orm.product_id = product.product_id
+
+                if product.description:
+                    product_orm.description = product.description
+                if product.sale_price:
+                    product_orm.sale_price = product.sale_price
+                if product.cost_price:
+                    product_orm.cost_price = product.cost_price
+                if product.img_link:
+                    product_orm.img_link = product.img_link
+                if product.inventory_entries:
+                    product_orm.inventory_entries = product.inventory_entries
+            else:
+                product_orm = ProductsORM(**product.dict())
+                session.add(product_orm)
+
+            session.commit()
+
+            return product
 
     async def add_product_image(self, category_id: str, product_name: str, image) -> str:
         """
