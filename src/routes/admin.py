@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from pydantic import ValidationError
 
-from src.routes import product_test_values
+
 from src.database.models.products import Product, Category
 from src.authentication import user_details, login_required, admin_login
 from src.database.models.users import User
@@ -36,9 +36,6 @@ async def get_customers(user: User):
 async def get_products(user: User):
     products_list = await product_controller.get_products()
     category_list = await product_controller.get_categories()
-
-    if not products_list:
-        products_list: list[Product] = product_test_values()
 
     context = dict(user=user, category_list=category_list, products_list=products_list)
     return render_template('admin/products/products.html', **context)
