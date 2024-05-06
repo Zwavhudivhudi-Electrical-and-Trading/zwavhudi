@@ -28,8 +28,8 @@
                                 <img alt="{{ product.name }}" src="{{ url_for('static', filename=product.img_link) }}" class="img-fluid">
                             </div>
                             <div class="card-footer">
-                                <span class="font-weight-bold text-dark">Price : <span class="font-italic text-info">R {{ product.sale_price| number }}.00</span></span>
-                                <span class="font-weight-bold text-dark">Inventory: <span class="font-italic text-info">{{ product.total_inventory| number }} Items</span></span>
+                                <h6 class="card-title font-weight-bold text-dark">Price : <span class="font-italic text-info">R {{ product.sale_price| number }}.00</span></h6>
+                                <h6 class="card-title font-weight-bold text-dark">Inventory: <span class="font-italic text-info">{{ product.total_inventory| number }} Items</span></h6>
                             </div>
                             <div class="card-footer">
                                 {% if user %}
