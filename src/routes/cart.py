@@ -4,7 +4,7 @@ from src.database.models.orders import Order, OrderItem
 from src.database.models.customers import CustomerDetails
 from src.main import customer_controller, product_controller
 from src.routes import product_test_values
-from src.database.models.products import Product, InventoryEntries, InventoryEntryReasons
+from src.database.models.products import Product, InventoryEntries, InventoryEntryReasons, Category
 from src.authentication import user_details, login_required
 from src.database.models.users import User
 
@@ -18,9 +18,10 @@ async def get_cart(user: User | None):
 
     customer_details = await customer_controller.get_customer_details(customer_id=user.customer_id)
 
-    products_list: list[Product] = product_test_values()
+    products_list: list[Product] = await product_controller.get_products()
+    categories_list: list[Category] = await product_controller.get_categories()
 
-    context = dict(user=user, social_url=social_url, products_list=products_list, customer=customer_details)
+    context = dict(user=user, social_url=social_url, categories_list=categories_list, products_list=products_list, customer=customer_details)
     return render_template('cart/cart.html', **context)
 
 
