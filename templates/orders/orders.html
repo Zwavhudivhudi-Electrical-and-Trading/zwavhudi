@@ -131,14 +131,14 @@
                     {% for order in current_orders %}
                     <tr>
                         <td><a href="{{ url_for('cart.get_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">
-                            <i class="fa fa-edit"> </i>
+                            <i class="fa fa-search-plus"> </i>
                             {{ order.order_id }}
                         </a></td>
                         <td>{{ order.order_datetime }}</td>
                         <td>{{ order.status }}</td>
                         <td>
                             <a href="{{ url_for('cart.edit_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">
-                                <i class="fa fa-shopping-bag"> </i>
+                                <i class="fa fa-edit"> </i>
                                 Edit
                             </a>
                             <a href="{{ url_for('cart.finalize_order', order_id=order.order_id) }}" class="btn btn-primary btn-sm">
