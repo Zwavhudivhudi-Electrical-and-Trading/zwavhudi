@@ -40,15 +40,15 @@ class ProductController(Controllers):
 
         # Construct the directory path for the category
         category_dir = os.path.join("images", "inventory", category_name)
-
+        os.makedirs(os.path.join(static_folder(), category_dir), exist_ok=True)
         # Create the category directory if it doesn't exist
-        os.makedirs(f"{static_folder()}/{category_dir}", exist_ok=True)
+        # os.makedirs(f"{static_folder()}/{category_dir}", exist_ok=True)
 
         # Construct the image link
-        image_link = os.path.join(f"/{category_dir}/{category_name}.{extension}")
+        return os.path.join(category_dir, f"{category_name}.{extension}")
 
         # Return the image link
-        return image_link.replace("\\", "/")  # Replace backslashes for Windows compatibility
+        # return image_link.replace("\\", "/")  # Replace backslashes for Windows compatibility
 
     @staticmethod
     async def create_product_link(category_name: str, product_name: str, extension: str) -> str | None:
@@ -139,7 +139,11 @@ class ProductController(Controllers):
             return None
 
         destination_image_path = await self.create_category_link(category_name=category_name, extension=extension)
-        image.save(f"{static_folder()}destination_image_path")
+        print(f"Static Folder : {static_folder()}")
+        print(f"Image Path : {destination_image_path}")
+        save_file = f"{static_folder()}/{destination_image_path}"
+        print(f"Save File Destination: {save_file}")
+        image.save(save_file)
         return destination_image_path
 
 
