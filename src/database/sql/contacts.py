@@ -7,9 +7,9 @@ from src.database.sql import Base, engine
 class AddressORM(Base):
     __tablename__ = "addresses"
     address_id = Column(String(ID_LEN), primary_key=True)
-    street = Column(String(255))
-    city = Column(String(255))
-    state_province = Column(String(255))
+    address_line_1 = Column(String(255))
+    town_city = Column(String(100))
+    province = Column(String(100))
     postal_code = Column(String(20))
     country = Column(String(100))
 
@@ -29,11 +29,11 @@ class AddressORM(Base):
         """
         return {
             "address_id": self.address_id,
-            "street": self.street,
-            "city": self.city,
-            "state_province": self.state_province,
-            "postal_code": self.postal_code,
-            "country": self.country
+            "address_line_1": self.address_line_1,
+            "town_city": self.town_city,
+            "province": self.province,
+            "country": self.country,
+            "postal_code": self.postal_code
         }
 
 
@@ -78,8 +78,8 @@ class PostalAddressORM(Base):
     address_line_1 = Column(String(255))
     town_city = Column(String(100))
     province = Column(String(100))
-    country = Column(String(100))
     postal_code = Column(String(20))
+    country = Column(String(100))
 
     @classmethod
     def create_if_not_table(cls):

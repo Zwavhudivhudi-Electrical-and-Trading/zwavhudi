@@ -171,19 +171,20 @@ class CustomerController(Controllers):
         """
         with self.get_session() as session:
 
-            branch_address_orm: AddressORM = session.query(AddressORM).filter_by(address_id=address.address_id).first()
+            address_orm: AddressORM = session.query(AddressORM).filter_by(address_id=address.address_id).first()
 
-            if isinstance(branch_address_orm, AddressORM):
+            if isinstance(address_orm, AddressORM):
 
-                if address.street:
-                    branch_address_orm.street = address.street
-                if address.city:
-                    branch_address_orm.city = address.city
-                if address.state_province:
-                    branch_address_orm.state_province = address.state_province
+                if address.address_line_1:
+                    address_orm.street = address.address_line_1
+                if address.town_city:
+                    address_orm.town_city = address.town_city
+                if address.province:
+                    address_orm.province = address.province
                 if address.postal_code:
-                    branch_address_orm.postal_code = address.postal_code
-
+                    address_orm.postal_code = address.postal_code
+                if address.country:
+                    address_orm.country = address.country
                 session.commit()
                 return address
             try:
@@ -213,19 +214,19 @@ class CustomerController(Controllers):
         with self.get_session() as session:
 
             _postal_id = postal_address.postal_id
-            branch_postal_orm = session.query(PostalAddressORM).filter_by(postal_id=_postal_id).first()
+            postal_orm = session.query(PostalAddressORM).filter_by(postal_id=_postal_id).first()
 
-            if isinstance(branch_postal_orm, PostalAddressORM):
+            if isinstance(postal_orm, PostalAddressORM):
                 if postal_address.address_line_1:
-                    branch_postal_orm.address_line_1 = postal_address.address_line_1
+                    postal_orm.address_line_1 = postal_address.address_line_1
                 if postal_address.town_city:
-                    branch_postal_orm.town_city = postal_address.town_city
+                    postal_orm.town_city = postal_address.town_city
                 if postal_address.province:
-                    branch_postal_orm.province = postal_address.province
+                    postal_orm.province = postal_address.province
                 if postal_address.country:
-                    branch_postal_orm.country = postal_address.country
+                    postal_orm.country = postal_address.country
                 if postal_address.postal_code:
-                    branch_postal_orm.postal_code = postal_address.postal_code
+                    postal_orm.postal_code = postal_address.postal_code
                 session.commit()
                 return postal_address
 

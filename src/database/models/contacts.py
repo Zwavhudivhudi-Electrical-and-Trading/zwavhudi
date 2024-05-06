@@ -19,9 +19,9 @@ class Address(BaseModel):
 
     address_id: str = Field(default_factory=create_id,
                             description="The unique ID of the address.")
-    street: str
-    city: str
-    state_province: str
+    address_line_1: str
+    town_city: str
+    province: str
     postal_code: str
     country: str
 
@@ -42,6 +42,6 @@ class PostalAddress(BaseModel):
     address_line_1: str
     town_city: str
     province: str
-    country: str
     postal_code: str
+    country: str
 
