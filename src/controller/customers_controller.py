@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, url_for
 from sqlalchemy.exc import OperationalError
 
+from src.emailer import EmailModel
 from src.database.sql.orders import OrderORM
 from src.controller import Controllers, error_handler
 from src.database.models.contacts import Address, PostalAddress, Contacts
@@ -8,6 +9,7 @@ from src.database.models.customers import CustomerDetails
 from src.database.models.orders import Order, OrderStatus, OrderItem
 from src.database.sql.contacts import AddressORM, PostalAddressORM, ContactsORM
 from src.database.sql.customer import CustomerDetailsORM
+from src.main import send_mail
 
 
 class CustomerController(Controllers):
@@ -339,3 +341,35 @@ class CustomerController(Controllers):
             session.commit()
 
             return order
+
+
+    async def email_invoice(self, email_address: str, order: Order):
+        """
+
+        :param email_address:
+        :param order:
+        :return:
+        """
+        invoice_link = url_for('cart.public_invoice_link', customer_id=order.customer_id, order_id=order.order_id, _external=True)
+        html= f"""
+            <h3 class="card-title">Dreamland Cleaning Chemicals Invoice</h3>
+            
+            <h5>Sub Total : R {order.total_price}.00</h5>
+            <h5>Discount : R {order.total_discount}.00</h5>
+            <h5>Total Payable: R {order.total_price - order.total_discount}.00</h5>
+            
+            <h6>For your Complete Invoice please click below</h6>
+            
+            <a class="btn btn-sm btn-rounded btn-success" href="{invoice_link}" target="_blank">open invoice</a>
+            
+            <h6>Thank you</h6>
+                <p>Dreamland Cleaning Chemicals</p>
+                <p>a subsidiary of  River Plus Projects - a South African Private Company</p>
+                <p>Contact : 072-224-4716</p>
+                <p>Website : https://dreamland-chemicals.org</p>
+        """
+        email = EmailModel(to_=email_address,
+                           subject="Dreamland Cleaning Chemicals Invoice",
+                           html_=html)
+        await send_mail.send_mail_resend(email=email)
+        return email

@@ -243,3 +243,29 @@ async def finalize_order(user: User, order_id: str):
         context.update(address={})
     return render_template('orders/modals/quotation.html', **context)
 
+
+@cart_route.get("/customer/invoice/<string:customer_id>/<string:order_id>")
+async def public_invoice_link(customer_id: str, order_id: str):
+    """
+        Accessible with Email Link --
+    :param customer_id:
+    :param order_id:
+    :return:
+    """
+    customer = await customer_controller.get_customer_details(customer_id=customer_id)
+    order = await customer_controller.get_order_by_order_id(customer_id=customer_id, order_id=order_id)
+
+    order = Order(**order.dict())
+    # _stored_order = await customer_controller.store_order_to_database(order=order)
+    context = dict(order=order, customer=customer)
+
+    if customer.postal_id and customer.delivery_address_id == customer.postal_id:
+        postal_address = await  customer_controller.get_postal_address(postal_id=customer.postal_id)
+        context.update(address=postal_address)
+    elif customer.address_id and customer.delivery_address_id == customer.address_id:
+        physical_address = await customer_controller.get_address(address_id=customer.address_id)
+        context.update(address=physical_address)
+    else:
+        context.update(address={})
+    return render_template('orders/modals/quotation.html', **context)
+
