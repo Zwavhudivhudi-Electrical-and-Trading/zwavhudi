@@ -342,7 +342,6 @@ class CustomerController(Controllers):
 
             return order
 
-
     async def email_invoice(self, email_address: str, order: Order):
         """
 
@@ -350,8 +349,9 @@ class CustomerController(Controllers):
         :param order:
         :return:
         """
-        invoice_link = url_for('cart.public_invoice_link', customer_id=order.customer_id, order_id=order.order_id, _external=True)
-        html= f"""
+        invoice_link = url_for('cart.public_invoice_link', customer_id=order.customer_id, order_id=order.order_id,
+                               _external=True)
+        html = f"""
             <h3 class="card-title">Dreamland Cleaning Chemicals Invoice</h3>
             
             <h5>Sub Total : R {order.total_price}.00</h5>
