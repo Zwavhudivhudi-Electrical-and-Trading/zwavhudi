@@ -197,4 +197,12 @@ async def add_category_product(user: User, category_id: str):
 @admin_route.get('/admin/messages')
 @admin_login
 async def get_messages(user: User):
-    pass
+    """
+
+    :param user:
+    :return:
+    """
+    contact_messages = await customer_controller.get_all_unresolved_issues()
+    context = dict(user=user, contact_messages=contact_messages)
+    return render_template('admin/messages/messages.html', **context)
+

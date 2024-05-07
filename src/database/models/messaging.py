@@ -57,3 +57,15 @@ class EmailCompose(BaseModel):
     message: str
     to_branch: str
     recipient_type: str
+
+
+class ContactForm(BaseModel):
+    uid: str
+    contact_id: str = Field(default_factory=create_id)
+    name: str
+    email: str
+    message: str
+    datetime_submitted: str = Field(default_factory=date_time)
+    issue_resolved: bool = Field(default=False)
+
+

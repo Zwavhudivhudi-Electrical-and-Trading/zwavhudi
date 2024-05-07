@@ -1,6 +1,8 @@
 from flask import Flask, url_for
 from sqlalchemy.exc import OperationalError
 
+from src.database.models.messaging import ContactForm
+from src.database.sql.messaging import ContactFormORM
 from src.emailer import EmailModel
 from src.database.sql.orders import OrderORM, OrderItemORM
 from src.controller import Controllers, error_handler
@@ -175,6 +177,7 @@ class CustomerController(Controllers):
             if isinstance(customer_orm, CustomerDetailsORM):
                 return CustomerDetails(**customer_orm.to_dict())
             return None
+
     async def get_all_customers(self) -> list[CustomerDetails]:
         """
 
@@ -365,6 +368,7 @@ class CustomerController(Controllers):
 
             session.commit()
             return order
+
     async def get_orders_by_status(self, status: str) -> list[Order]:
         """
             class OrderStatus(Enum):
@@ -382,7 +386,6 @@ class CustomerController(Controllers):
             orders_list = session.query(OrderORM).filter_by(status=status).all()
             return [Order(**order_orm.to_dict()) for order_orm in orders_list if isinstance(order_orm, OrderORM)]
 
-
     async def customer_order_by_order_id(self, order_id: str) -> Order:
         """
 
@@ -392,7 +395,6 @@ class CustomerController(Controllers):
         with self.get_session() as session:
             order_orm = session.query(OrderORM).get(order_id)
             return Order(**order_orm.to_dict())
-
 
     async def email_invoice(self, email_address: str, order: Order):
         """
@@ -427,3 +429,21 @@ class CustomerController(Controllers):
                            html_=html)
         await send_mail.send_mail_resend(email=email)
         return email
+
+    async def add_update_contact_form(self, contact_details: ContactForm):
+        """
+
+        :param contact_details:
+        :return:
+        """
+        with self.get_session() as session:
+            contact_orm = ContactFormORM(**contact_details.dict())
+            session.add(contact_orm)
+            session.commit()
+            return contact_details
+
+    async def get_all_unresolved_issues(self):
+        with self.get_session() as session:
+            contact_form_list = session.query(ContactFormORM).filter_by(issue_resolved=False).all()
+            return [ContactForm(**contact_orn.to_dict()) for contact_orn in contact_form_list
+                    if isinstance(contact_orn, ContactFormORM)]

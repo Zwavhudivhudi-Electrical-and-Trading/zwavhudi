@@ -77,7 +77,7 @@ class SMSComposeORM(Base):
             "message_id": self.message_id,
             "message": self.message,
             "reference": self.reference,
-            "from_cell":self.from_cell,
+            "from_cell": self.from_cell,
             "to_cell": self.to_cell,
             "to_branch": self.to_branch,
             "recipient_type": self.recipient_type,
@@ -85,4 +85,39 @@ class SMSComposeORM(Base):
             "date_time_sent": self.date_time_sent,
             "is_delivered": self.is_delivered,
             "client_responded": self.client_responded
+        }
+
+
+class ContactFormORM(Base):
+    __tablename__ = "contact_form"
+    uid: str = Column(String(ID_LEN))
+    contact_id: str = Column(String(ID_LEN), primary_key=True)
+    name: str = Column(String(NAME_LEN))
+    email: str = Column(String(255))
+    message: str = Column(Text)
+    datetime_submitted: str = Column(String(36))
+    issue_resolved: bool = Column(Boolean)
+
+    @classmethod
+    def create_if_not_table(cls):
+        if not inspect(engine).has_table(cls.__tablename__):
+            Base.metadata.create_all(bind=engine)
+
+    @classmethod
+    def delete_table(cls):
+        if inspect(engine).has_table(cls.__tablename__):
+            cls.__table__.drop(bind=engine)
+
+    def to_dict(self):
+        """
+        Convert the object to a dictionary representation.
+        """
+        return {
+            "uid": self.uid,
+            "contact_id": self.contact_id,
+            "name": self.name,
+            "email": self.email,
+            "message": self.message,
+            "datetime_submitted": self.datetime_submitted,
+            "issue_resolved": self.issue_resolved
         }
