@@ -2,7 +2,7 @@ from flask import Flask, url_for
 from sqlalchemy.exc import OperationalError
 
 from src.emailer import EmailModel
-from src.database.sql.orders import OrderORM
+from src.database.sql.orders import OrderORM, OrderItemORM
 from src.controller import Controllers, error_handler
 from src.database.models.contacts import Address, PostalAddress, Contacts
 from src.database.models.customers import CustomerDetails
@@ -336,7 +336,7 @@ class CustomerController(Controllers):
                 order_orm.status = order.status
 
                 for order_item in order.items_ordered:
-                    order_item_orm = session.query(OrderItem).get(order_item.item_id)
+                    order_item_orm: OrderItemORM = session.query(OrderItemORM).get(order_item.item_id)
                     if isinstance(order_item_orm, OrderItem):
                         order_item_orm.price = order_item.price
                         order_item_orm.product_id = order_item.product_id
@@ -344,14 +344,15 @@ class CustomerController(Controllers):
                         order_item_orm.quantity = order_item.quantity
                         order_item_orm.discount_percent = order_item.discount_percent
                     else:
-                        order_item_orm = OrderItem(**order_item.dict())
+                        order_item_orm: OrderItemORM = OrderItemORM(**order_item.dict())
                         session.add(order_item_orm)
 
             else:
-                order_rm = OrderORM(**order.dict(exclude=['items_ordered']))
-                session.add(order_rm)
+                order_orm_dict = {k: v for k, v in order.dict().items() if k != 'items_ordered'}
+                order_orm = OrderORM(**order_orm_dict)
+                session.add(order_orm)
                 for order_item in order.items_ordered:
-                    order_item_orm = OrderItem(**order_item.dict())
+                    order_item_orm: OrderItemORM = OrderItemORM(**order_item.dict())
                     session.add(order_item_orm)
 
             session.commit()
