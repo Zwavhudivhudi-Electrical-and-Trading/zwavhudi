@@ -11,26 +11,28 @@
             </h2>
         </div>
         <div class="card-body">
-            <div class="message-details">
+            <div class="card-content">
                 <ol>
-                    <li class="font-weight-bold text-info"><strong>Contact ID:</strong> {{ contact_message.contact_id }}</li>
+{#                    <li class="font-weight-bold text-info"><strong>Contact ID:</strong> {{ contact_message.contact_id }}</li>#}
                     <li class="font-weight-bold text-info"><strong>Name:</strong> {{ contact_message.name }}</li>
                     <li class="font-weight-bold text-info"><strong>Email:</strong> {{ contact_message.email }}</li>
-                    <li class="font-weight-bold text-info"><strong>Message:</strong> {{ contact_message.message }}</li>
                     <li class="font-weight-bold text-info"><strong>Date Submitted:</strong> {{ contact_message.datetime_submitted }}</li>
                 </ol>
             </div>
-            <div class="message-response">
-                <form action="/admin/respond/{{ contact_message.contact_id }}" method="post">
+            <div class="card-content">
+                <h6 class="card-title">Message</h6>
+                <blockquote>
+                    {{ contact_message.message }}
+                </blockquote>
+            </div>
+            <div class="card-footer">
+                <form action="#" method="post">
                     <div class="form-group">
                         <label for="response">Your Response:</label>
                         <textarea class="form-control" id="response" name="response" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Response</button>
                 </form>
-            </div>
-            <div class="customer-details">
-                <a href="/admin/customer/{{ contact_message.uid }}">View Customer Details</a>
             </div>
         </div>
     </div>
