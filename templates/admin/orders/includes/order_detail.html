@@ -15,20 +15,20 @@
                     <div class="col-md-6">
                         <h4 class="card-title font-weight-bold">Customer Details</h4>
                         <ol>
-                        <li class="font-weight-bold text-info">Customer ID: {{ customer.customer_id }}</li>
-                        <li class="font-weight-bold text-info">Name: {{ customer.full_names }} {{ customer.surname }}</li>
-                        <li class="font-weight-bold text-info">Email: {{ customer.email }}</li>
-                        <li class="font-weight-bold text-info">Contact Number: {{ customer.contact_number }}</li>
+                        <li class="font-weight-bold text-info">Customer ID: <span class="text-dark">{{ customer.customer_id }}</span></li>
+                            <li class="font-weight-bold text-info">Name: <span class="text-dark">{{ customer.full_names }} {{ customer.surname }}</span></li>
+                            <li class="font-weight-bold text-info">Email: <span class="text-dark">{{ customer.email }}</span></li>
+                            <li class="font-weight-bold text-info">Contact Number: <span class="text-dark">{{ customer.contact_number }}</span></li>
                         </ol>
                         <!-- Add more customer details as needed -->
                     </div>
                     <div class="col-md-6">
                         <h4 class="card-title font-weight-bold">Order Details</h4>
                     <ol>
-                        <li class="font-weight-bold text-info">Order ID: {{ order.order_id }}</li>
-                        <li class="font-weight-bold text-info">Order Date: {{ order.order_datetime }}</li>
-                        <li class="font-weight-bold text-info">Order Placed {{ order.time_since_ordered }} Minutes Ago</li>
-                        <li class="font-weight-bold text-info">Phone: {{ order.phone }}</li>
+                        <li class="font-weight-bold text-info">Order ID: <span class="text-dark">{{ order.order_id }}</span></li>
+                        <li class="font-weight-bold text-info">Order Date: <span class="text-dark">{{ order.order_datetime }}</span></li>
+                        <li class="font-weight-bold text-info">Order Placed <span class="text-dark">{{ order.time_since_ordered }} Minutes Ago</span></li>
+                        <li class="font-weight-bold text-info">Phone: <span class="text-dark">{{ order.phone }}</span></li>
                         <li class="font-weight-bold text-info">
                             <form action="/change_order_status" method="post">
 
