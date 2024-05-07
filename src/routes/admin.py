@@ -51,7 +51,6 @@ async def get_orders(user: User):
     return render_template('admin/orders/orders.html', **context)
 
 
-
 @admin_route.get('/admin/customers')
 @admin_login
 async def get_customers(user: User):
@@ -146,7 +145,8 @@ async def add_category_product(user: User, category_id: str):
         return redirect(url_for('admin.get_categories'))
 
     # TODO - add product image first
-    image_link = await product_controller.add_product_image(category_id=category_id, product_name=product_detail.name, image=image)
+    image_link = await product_controller.add_product_image(category_id=category_id, product_name=product_detail.name,
+                                                            image=image)
     product_detail.img_link = image_link
     print(f"Updated Product Detail: {product_detail}")
     product = await product_controller.add_category_product(category_id=category_id, product=product_detail)

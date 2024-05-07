@@ -11,26 +11,31 @@
                 <h3 class="card-title font-weight-bold text-info">Orders</h3>
             </div>
             <div class="card-body">
-                <div class="row flex-row">
-                    {% for status, orders in orders_by_status.items() %}
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h4 class="card-title">{{ status }}</h4>
-                                </div>
-                                <ul class="list-group list-group-flush">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Email</th>
+                                <!-- Add more table headers as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for status, orders in orders_by_status.items() %}
+                                <tr>
+                                    <td rowspan="{{ orders|length }}">{{ status }}</td>
                                     {% for order in orders %}
-                                        <li class="list-group-item">
-                                            Order ID: {{ order.order_id }}<br>
-                                            Customer Name: {{ order.customer_name }}<br>
-                                            Email: {{ order.email }}<br>
-                                            <!-- Add more details as needed -->
-                                        </li>
+                                        <td>{{ order.order_id }}</td>
+                                        <td>{{ order.customer_name }}</td>
+                                        <td>{{ order.email }}</td>
+                                        <!-- Add more table cells as needed -->
+                                </tr>
                                     {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
