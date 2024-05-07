@@ -41,6 +41,7 @@ class OrderItem(BaseModel):
 
 
 class Order(BaseModel):
+
     order_id: str = Field(default_factory=create_order_number)
     customer_id: str
     customer_name: str

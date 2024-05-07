@@ -68,6 +68,7 @@ class OrderORM(Base):
 
     def to_dict(self):
         return {
+            'order_id': self.order_id,
             'customer_id': self.customer_id,
             'customer_name': self.customer_name,
             'email': self.email,
