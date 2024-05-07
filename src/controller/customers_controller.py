@@ -348,7 +348,7 @@ class CustomerController(Controllers):
                         session.add(order_item_orm)
 
             else:
-                order_rm = OrderORM(**order.dict())
+                order_rm = OrderORM(**order.dict(exclude=['items_ordered']))
                 session.add(order_rm)
                 for order_item in order.items_ordered:
                     order_item_orm = OrderItem(**order_item.dict())
