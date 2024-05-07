@@ -175,6 +175,14 @@ class CustomerController(Controllers):
             if isinstance(customer_orm, CustomerDetailsORM):
                 return CustomerDetails(**customer_orm.to_dict())
             return None
+    async def get_all_customers(self) -> list[CustomerDetails]:
+        """
+
+        :return:
+        """
+        with self.get_session() as session:
+            customers_orm_list = session.query(CustomerDetailsORM).all()
+            return [CustomerDetails(**cust_orm.to_dict()) for cust_orm in customers_orm_list]
 
     # noinspection DuplicatedCode
     @error_handler

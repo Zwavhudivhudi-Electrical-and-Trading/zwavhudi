@@ -71,7 +71,15 @@ async def get_customer_order(user: User, customer_id: str, order_id: str):
 @admin_route.get('/admin/customers')
 @admin_login
 async def get_customers(user: User):
-    pass
+    """
+
+    :param user:
+    :return:
+    """
+
+    customers_list = await customer_controller.get_all_customers()
+    context = dict(user=user, customers_list=customers_list)
+    return render_template('admin/customers/customers.html', **context)
 
 
 @admin_route.get('/admin/products')
