@@ -15,10 +15,11 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Status</th>
                                 <th>Order ID</th>
                                 <th>Customer Name</th>
                                 <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
                                 <!-- Add more table headers as needed -->
                             </tr>
                         </thead>
@@ -26,18 +27,17 @@
                             {% for status, orders in orders_by_status.items() %}
                                 <tr>
                                     {% for order in orders %}
-                                        <td>{{ order.status }}</td>
                                         <td>
                                         <a class="font-weight-bold text-info" href="{{ url_for('admin.get_customer_order', customer_id=order.customer_id, order_id=order.order_id) }}">
                                             {{ order.order_id }}
                                         </a>
                                         </td>
                                         <td>
-                                        <a class="font-weight-bold text-info" href="#">
                                             {{ order.customer_name }}
-                                        </a>
                                         </td>
                                         <td>{{ order.email }}</td>
+                                        <td>{{ order.phone }}</td>
+                                        <td>{{ order.status }}</td>
                                         <!-- Add more table cells as needed -->
                                 </tr>
                                     {% endfor %}
