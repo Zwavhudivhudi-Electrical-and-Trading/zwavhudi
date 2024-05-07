@@ -375,6 +375,15 @@ class CustomerController(Controllers):
             return [Order(**order_orm.to_dict()) for order_orm in orders_list if isinstance(order_orm, OrderORM)]
 
 
+    async def customer_order_by_order_id(self, order_id: str) -> Order:
+        """
+
+        :param order_id:
+        :return:
+        """
+        with self.get_session() as session:
+            order_orm = session.query(OrderORM).get(order_id)
+            return Order(**order_orm.to_dict())
 
 
     async def email_invoice(self, email_address: str, order: Order):

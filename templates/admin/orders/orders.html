@@ -27,8 +27,16 @@
                                 <tr>
                                     {% for order in orders %}
                                         <td>{{ order.status }}</td>
-                                        <td>{{ order.order_id }}</td>
-                                        <td>{{ order.customer_name }}</td>
+                                        <td>
+                                        <a class="font-weight-bold text-info" href="{{ url_for('admin.get_customer_order', customer_id=order.customer_id, order_id=order.order_id) }}">
+                                            {{ order.order_id }}
+                                        </a>
+                                        </td>
+                                        <td>
+                                        <a class="font-weight-bold text-info" href="#">
+                                            {{ order.customer_name }}
+                                        </a>
+                                        </td>
                                         <td>{{ order.email }}</td>
                                         <!-- Add more table cells as needed -->
                                 </tr>

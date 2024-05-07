@@ -49,7 +49,18 @@ async def get_orders(user: User):
     }
 
     return render_template('admin/orders/orders.html', **context)
+@admin_route.get('/admin/order/<string:customer_id>/<string:order_id>')
+@admin_login
+async def get_customer_order(user: User,customer_id:str, order_id: str):
+    """
 
+    :param customer_id:
+    :param user:
+    :param order_id:
+    :return:
+    """
+    order = await customer_controller.customer_order_by_order_id(order_id=order_id)
+    print(order)
 
 @admin_route.get('/admin/customers')
 @admin_login
