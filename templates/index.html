@@ -10,7 +10,25 @@
                 ZwavhudiVhudi Electrical &amp; Projects
             </h1>
         </div>
+        <div class="scrollable-row">
 
+            {% for category in category_list %}
+                <div class="row fluid">
+                    <!-- Image Column -->
+                    <div class="card-body">
+                        <img alt="{{ category.name }}" src="{{ url_for('static', filename=category.img_link| safe ) }}" class="img-fluid" />
+
+                        <h2 class="card-title font-weight-bold text-info">{{ category.name }}</h2>
+                        <p class="font-weight-bold text-info fluid">{{ category.description }}</p>
+                            <div class="card-footer">
+                                <a href="{{ url_for('cart.get_category_products', category_name=category.name) }}" class="btn btn-sm btn-primary">Product List</a>
+                            </div>
+
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
     </div>
 </section>
 
