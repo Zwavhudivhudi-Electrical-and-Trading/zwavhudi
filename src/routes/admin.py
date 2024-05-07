@@ -206,3 +206,20 @@ async def get_messages(user: User):
     context = dict(user=user, contact_messages=contact_messages)
     return render_template('admin/messages/messages.html', **context)
 
+
+@admin_route.get('/admin/message/<string:contact_id>')
+@admin_login
+async def get_contact_message(user: User, contact_id: str):
+    """
+
+    :param user:
+    :param contact_id:
+    :return:
+    """
+    contact_message = await customer_controller.get_contact_message(contact_id=contact_id)
+    context = dict(user=user, contact_message=contact_message)
+
+    return render_template('admin/messages/includes/message.html', **context)
+
+
+

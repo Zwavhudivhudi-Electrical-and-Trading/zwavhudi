@@ -447,3 +447,15 @@ class CustomerController(Controllers):
             contact_form_list = session.query(ContactFormORM).filter_by(issue_resolved=False).all()
             return [ContactForm(**contact_orn.to_dict()) for contact_orn in contact_form_list
                     if isinstance(contact_orn, ContactFormORM)]
+
+    async def get_contact_message(self, contact_id: str) -> ContactForm:
+        """
+
+        :param contact_id:
+        :return:
+        """
+        with self.get_session() as session:
+            contact_message_orm = session.query(ContactFormORM).filter_by(contact_id=contact_id).first()
+            if isinstance(contact_message_orm, ContactFormORM):
+                return ContactForm(**contact_message_orm.to_dict())
+            return None
