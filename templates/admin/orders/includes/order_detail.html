@@ -14,18 +14,21 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h4>Customer Details</h4>
-                        <p>Customer ID: {{ customer.customer_id }}</p>
-                        <p>Name: {{ customer.full_names }} {{ customer.surname }}</p>
-                        <p>Email: {{ customer.email }}</p>
-                        <p>Contact Number: {{ customer.contact_number }}</p>
+                        <ol>
+                        <li class="font-weight-bold text-info">Customer ID: {{ customer.customer_id }}</li>
+                        <li class="font-weight-bold text-info">Name: {{ customer.full_names }} {{ customer.surname }}</li>
+                        <li class="font-weight-bold text-info">Email: {{ customer.email }}</li>
+                        <li class="font-weight-bold text-info">Contact Number: {{ customer.contact_number }}</li>
+                        </ol>
                         <!-- Add more customer details as needed -->
                     </div>
                     <div class="col-md-6">
                         <h4>Order Details</h4>
-                        <p>Order ID: {{ order.order_id }}</p>
-                        <p>Order Date: {{ order.order_datetime }}</p>
-                        <p>Phone: {{ order.phone }}</p>
-                        <p>Status:
+                    <ol>
+                        <li class="font-weight-bold text-info">Order ID: {{ order.order_id }}</li>
+                        <li class="font-weight-bold text-info">Order Date: {{ order.order_datetime }}</li>
+                        <li class="font-weight-bold text-info">Phone: {{ order.phone }}</li>
+                        <li class="font-weight-bold text-info">Status:
                             <form action="/change_order_status" method="post">
                                 <select name="status">
                                     <option value="Pending" {% if order.status == 'Pending' %} selected {% endif %}>Pending</option>
@@ -37,14 +40,15 @@
                                 <input type="hidden" name="order_id" value="{{ order.order_id }}">
                                 <input type="submit" value="Change Status">
                             </form>
-                        </p>
+                        </li>
+                    </ol>
                         <!-- Add more order details as needed -->
                     </div>
                 </div>
                 <h4>Items Ordered</h4>
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
+                        <tr class="font-weight-bold">
                             <th>Item ID</th>
                             <th>Product Name</th>
                             <th>Quantity</th>
