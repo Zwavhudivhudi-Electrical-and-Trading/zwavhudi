@@ -48,7 +48,7 @@ async def get_orders(user: User):
         }
     }
 
-    return render_template('admin/orders/orders.html')
+    return render_template('admin/orders/orders.html', **context)
 
 
 
