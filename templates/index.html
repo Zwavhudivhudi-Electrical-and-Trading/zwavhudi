@@ -19,7 +19,10 @@
                 <h2 class="card-title font-weight-bold text-info">{{ category.name|title }}</h2>
                 <p class="font-weight-bold text-info fluid" style="max-width: 200px;">{{ category.description[:35] }}{% if category.description|length > 35 %}...{% endif %}</p>
                 <div class="card-footer">
-                    <a href="{{ url_for('cart.get_category_products', category_name=category.name) }}" class="btn btn-sm btn-primary">Product List</a>
+                    <a href="{{ url_for('cart.get_category_products', category_name=category.name) }}" class="btn btn-sm btn-rounded btn-primary">
+                    <i class="fa fa-folder-open"> </i>
+                        Open
+                    </a>
                 </div>
             </div>
         </div>
