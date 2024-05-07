@@ -27,6 +27,7 @@
                     <ol>
                         <li class="font-weight-bold text-info">Order ID: {{ order.order_id }}</li>
                         <li class="font-weight-bold text-info">Order Date: {{ order.order_datetime }}</li>
+                        <li class="font-weight-bold text-info">Order Placed {{ order.time_since_ordered }} Ago</li>
                         <li class="font-weight-bold text-info">Phone: {{ order.phone }}</li>
                         <li class="font-weight-bold text-info">
                             <form action="/change_order_status" method="post">
