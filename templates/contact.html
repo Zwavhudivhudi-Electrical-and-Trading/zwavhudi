@@ -1,0 +1,103 @@
+{% extends "layouts/page.html" %}
+
+{% block content %}
+{% include "layouts/social.html" %}
+<section id="main-content">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-header">
+                <h2 class="card-title font-weight-bold text-info">
+                    <i class="fa fa-envelope-square"> </i>
+                    Contact Us
+                </h2>
+                <p class="font-weight-bold">Feel free to contact us for any inquiries or feedback.</p>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Dreamland Chemicals <small class="text-info">Is Located in the same stand with dreamland lodge</small></h3>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14701.647136996053!2d30.1752415!3d-22.8981777!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec5ff006b6c111f%3A0x313f904e0220d49e!2sDreamLand%20Guest%20Lodge!5e0!3m2!1sen!2sza!4v1714817594875!5m2!1sen!2sza" class="embed-responsive-item" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                            <!-- Google Map Location -->
+                            <a class="btn btn-lg btn-primary"
+                                    href="https://www.google.co.za/maps/dir//google+map+location+dreamland+lodge/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x1ec5ff006b6c111f:0x313f904e0220d49e?sa=X&ved=1t:3061&ictx=111">
+                                <i class="fa fa-map-marker"> </i>
+                                Get Directions
+                            </a>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title font-weight-bold text-info">
+                                    <i class="fa fa-envelope-open"> </i>
+                                    Contact Information
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="font-weight-bold text-info">Dreamland Chemicals</li>
+                                    <li><span class="font-weight-bold text-info m-t-4"><i class="fa fa-map-marker"> </i> Address:</span> Stand 003 Sendedza Nzhelele, Limpopo, 0993</li>
+                                    <li><span class="font-weight-bold text-info m-b-4"><i class="fa fa-envelope"> </i> Email:</span> <a href="mailto:info@dreamland-chemicals.org" class="text-info">info@dreamland-chemicals.org</a></li>
+                                    <li><span class="font-weight-bold text-info m-b-4"><i class="fa fa-mobile-phone"> </i> Cell:</span> <a href="tel:+27722244716" class="text-info">072-224-4716</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title font-weight-bold text-info">
+                                    <i class="fa fa-clock-o"> </i>
+                                    Operating Hours
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li><span class="font-weight-bold text-info m-t-4">Monday - Friday:</span> 9:00 AM - 5:00 PM</li>
+                                    <li><span class="font-weight-bold text-info m-b-4">Saturday - Sunday:</span> 9:00 AM - 2:00 PM</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="col-md-6">
+                    <div class="card-header">
+                        <h3 class="card-title font-weight-bold text-info">
+                            <i class="fa fa-inbox"> </i>
+                            Contact Form
+                        </h3>
+                    </div>
+                    <form action="{{ url_for('home.send_contact') }}" method="post">
+                        <div class="form-group">
+                            <label for="name" class="lsbel text-info font-weight-bold">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="lsbel text-info font-weight-bold">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="lsbel text-info font-weight-bold">Message:</label>
+                            <textarea class="col-12" id="message" name="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary font-weight-bold">
+                            <i class="fa fa-send-o"> </i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
