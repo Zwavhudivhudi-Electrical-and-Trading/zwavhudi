@@ -21,14 +21,13 @@
                     <tbody>
                         {% for contact in contact_messages %}
                             <tr>
-                                <td></td>
                                 <td class="font-weight-bold text-info">
                                     <a href="{{ url_for('admin.get_contact_message', contact_id=contact.contact_id) }}">
                                         {{ contact.name }}
                                     </a>
                                 </td>
                                 <td>{{ contact.email }}</td>
-                                <td>{{ contact.message }}</td>
+                                <td>{{ contact.message[:32] if contact.message else "" }}</td>
                                 <td>{{ contact.datetime_submitted }}</td>
                             </tr>
                         {% endfor %}
