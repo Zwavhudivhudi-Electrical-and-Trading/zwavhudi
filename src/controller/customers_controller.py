@@ -337,7 +337,7 @@ class CustomerController(Controllers):
 
                 for order_item in order.items_ordered:
                     order_item_orm: OrderItemORM = session.query(OrderItemORM).get(order_item.item_id)
-                    if isinstance(order_item_orm, OrderItem):
+                    if isinstance(order_item_orm, OrderItemORM):
                         order_item_orm.price = order_item.price
                         order_item_orm.product_id = order_item.product_id
                         order_item_orm.product_name = order_item.product_name
