@@ -19,11 +19,11 @@
                     <li class="font-weight-bold text-info"><strong>Date Submitted:</strong> {{ contact_message.datetime_submitted }}</li>
                 </ol>
             </div>
-            <div class="card-content">
+            <div class="card-footer">
                 <h6 class="card-title">Message</h6>
-                <blockquote>
+                <textarea class="col-12" readonly rows="8">
                     {{ contact_message.message }}
-                </blockquote>
+                </textarea>
             </div>
             <div class="card-footer">
                 <form action="#" method="post">
