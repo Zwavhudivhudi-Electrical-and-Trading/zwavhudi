@@ -20,7 +20,7 @@
                 <p class="font-weight-bold text-info fluid" style="max-width: 200px;">{{ category.description[:35] }}{% if category.description|length > 35 %}...{% endif %}</p>
                 <div class="card-footer">
                     <a href="{{ url_for('cart.get_category_products', category_name=category.name) }}"
-                       class="btn btn-sm btn-rounded btn-primary align-content-center"
+                       class="btn btn-sm btn-rounded btn-primary align-content-center w-25"
                     >
                     <i class="fa fa-folder-open"> </i>
                         Open
