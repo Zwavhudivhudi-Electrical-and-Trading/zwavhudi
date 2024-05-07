@@ -82,6 +82,18 @@ async def get_customers(user: User):
     return render_template('admin/customers/customers.html', **context)
 
 
+@admin_route.get('/admin/customer/<string:customer_id>')
+@admin_login
+async def edit_customer(user: User, customer_id: str):
+    """
+
+    :param user:
+    :param customer_id:
+    :return:
+    """
+    pass
+
+
 @admin_route.get('/admin/products')
 @admin_login
 async def get_products(user: User):
