@@ -8,12 +8,12 @@
 <section id="main-content">
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title font-weight-bold text-info"> Products Admin</h2>
+            <h2 class="card-title font-weight-bold text-info"> Products Catalogue</h2>
         </div>
 
         <div class="card-body">
             <div class="card-header">
-                <h3 class="card-title font-weight-bold">{{ category.name }} Products Inventory</h3>
+                <h3 class="card-title font-weight-bold">{{ category.name | title }} - Catalogue</h3>
                 <span class="font-weight-bold text-info">{{ category.description }}</span>
             </div>
             <div class="card-body">
@@ -21,7 +21,7 @@
                     {% for product in products_list %}
                         <div class="card flex-column col-lg-4 col-md-4 col-sm-12">
                             <div class="card-header">
-                                <h4 class="card-title">{{ product.name }}</h4>
+                                <h4 class="card-title">{{ product.name| title }}</h4>
                             </div>
                             <div class="card-content">
                                 <span>{{ product.description }}</span>
