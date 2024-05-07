@@ -5,15 +5,20 @@
 <section id="main-content">
     <div class="card">
         <div class="card-header">
-            <h2 class="">Message</h2>
+            <h2 class="card-title font-weight-bold text-info">
+                <i class="fa fa-envelope"> </i>
+                Contact Form Message
+            </h2>
         </div>
         <div class="card-body">
             <div class="message-details">
-                <p><strong>Contact ID:</strong> {{ contact_message.contact_id }}</p>
-                <p><strong>Name:</strong> {{ contact_message.name }}</p>
-                <p><strong>Email:</strong> {{ contact_message.email }}</p>
-                <p><strong>Message:</strong> {{ contact_message.message }}</p>
-                <p><strong>Date Submitted:</strong> {{ contact_message.datetime_submitted }}</p>
+                <ol>
+                    <li class="font-weight-bold text-info"><strong>Contact ID:</strong> {{ contact_message.contact_id }}</li>
+                    <li class="font-weight-bold text-info"><strong>Name:</strong> {{ contact_message.name }}</li>
+                    <li class="font-weight-bold text-info"><strong>Email:</strong> {{ contact_message.email }}</li>
+                    <li class="font-weight-bold text-info"><strong>Message:</strong> {{ contact_message.message }}</li>
+                    <li class="font-weight-bold text-info"><strong>Date Submitted:</strong> {{ contact_message.datetime_submitted }}</li>
+                </ol>
             </div>
             <div class="message-response">
                 <form action="/admin/respond/{{ contact_message.contact_id }}" method="post">
