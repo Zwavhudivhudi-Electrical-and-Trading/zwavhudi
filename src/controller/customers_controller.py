@@ -319,7 +319,7 @@ class CustomerController(Controllers):
     async def get_countries(self):
         return self.countries
 
-    async def store_order_to_database(self, order: Order) -> Order:
+    async def add_update_order_to_database(self, order: Order) -> Order:
         """
 
         :param order:
@@ -334,12 +334,27 @@ class CustomerController(Controllers):
                 order_orm.address_id = order.address_id
                 order_orm.order_datetime = order.order_datetime
                 order_orm.status = order.status
+
+                for order_item in order.items_ordered:
+                    order_item_orm = session.query(OrderItem).get(order_item.item_id)
+                    if isinstance(order_item_orm, OrderItem):
+                        order_item_orm.price = order_item.price
+                        order_item_orm.product_id = order_item.product_id
+                        order_item_orm.product_name = order_item.product_name
+                        order_item_orm.quantity = order_item.quantity
+                        order_item_orm.discount_percent = order_item.discount_percent
+                    else:
+                        order_item_orm = OrderItem(**order_item.dict())
+                        session.add(order_item_orm)
+
             else:
                 order_rm = OrderORM(**order.dict())
                 session.add(order_rm)
+                for order_item in order.items_ordered:
+                    order_item_orm = OrderItem(**order_item.dict())
+                    session.add(order_item_orm)
 
             session.commit()
-
             return order
 
     async def email_invoice(self, email_address: str, order: Order):

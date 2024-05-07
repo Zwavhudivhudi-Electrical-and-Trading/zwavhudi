@@ -21,7 +21,13 @@ async def check_if_name_is_invalid(name: str):
 @admin_route.get('/admin/orders')
 @admin_login
 async def get_orders(user: User):
+    """
+
+    :param user:
+    :return:
+    """
     pass
+
 
 
 @admin_route.get('/admin/customers')

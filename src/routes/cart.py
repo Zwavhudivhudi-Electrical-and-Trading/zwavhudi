@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, redirect, flash, request
 
 from src.database.models.contacts import PostalAddress, Address
-from src.database.models.orders import Order, OrderItem
+from src.database.models.orders import Order, OrderItem, OrderStatus
 from src.database.models.customers import CustomerDetails
 from src.main import customer_controller, product_controller
 
@@ -229,11 +229,14 @@ async def finalize_order(user: User, order_id: str):
     """
     customer = await customer_controller.get_customer_details(customer_id=user.customer_id)
     order = await customer_controller.get_order_by_order_id(customer_id=user.customer_id, order_id=order_id)
+
     order = Order(**order.dict())
+    order.status = OrderStatus.PENDING.value
     # _stored_order = await customer_controller.store_order_to_database(order=order)
     context = dict(user=user, order=order, customer=customer)
     email_sent = await customer_controller.email_invoice(email_address=order.email, order=order)
-    print(email_sent)
+
+    _stored_order = await customer_controller.add_update_order_to_database(order=order)
 
     if customer.postal_id and customer.delivery_address_id == customer.postal_id:
         postal_address = await  customer_controller.get_postal_address(postal_id=customer.postal_id)
@@ -258,7 +261,7 @@ async def public_invoice_link(customer_id: str, order_id: str):
     order = await customer_controller.get_order_by_order_id(customer_id=customer_id, order_id=order_id)
 
     order = Order(**order.dict())
-    # _stored_order = await customer_controller.store_order_to_database(order=order)
+
     context = dict(order=order, customer=customer)
 
     if customer.postal_id and customer.delivery_address_id == customer.postal_id:

@@ -1,0 +1,30 @@
+
+{% extends "layouts/page.html" %}
+{% block custom_css %}
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{% include "layouts/social.html" %}
+<section id="main-content">
+    <div class="card">
+
+        <div class="card-body">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold text-info">Orders</h3>
+            </div>
+            <div class="card-body">
+                <div class="row flex-row">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pending Orders</h3>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
