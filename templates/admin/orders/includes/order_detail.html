@@ -38,7 +38,9 @@
                                     <option value="Cancelled" {% if order.status == 'Cancelled' %} selected {% endif %}>Cancelled</option>
                                 </select>
                                 <input type="hidden" name="order_id" value="{{ order.order_id }}">
-                                <input type="submit" value="Change Status">
+                                <button class="btn btn-sm btn-rounded btn-primary" type="submit" value="Change Status">
+                                    Update Status
+                                </button>
                             </form>
                         </li>
                     </ol>
