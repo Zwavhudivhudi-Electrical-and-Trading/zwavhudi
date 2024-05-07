@@ -1,0 +1,73 @@
+{% extends "layouts/page.html" %}
+{% block custom_css %}
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{% include "layouts/social.html" %}
+<section id="main-content">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold text-info">Order Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Customer Details</h4>
+                        <p>Customer ID: {{ order.customer.customer_id }}</p>
+                        <p>Name: {{ order.customer.full_names }} {{ order.customer.surname }}</p>
+                        <p>Email: {{ order.customer.email }}</p>
+                        <p>Contact Number: {{ order.customer.contact_number }}</p>
+                        <!-- Add more customer details as needed -->
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Order Details</h4>
+                        <p>Order ID: {{ order.order.order_id }}</p>
+                        <p>Order Date: {{ order.order.order_datetime }}</p>
+                        <p>Phone: {{ order.order.phone }}</p>
+                        <p>Status:
+                            <form action="/change_order_status" method="post">
+                                <select name="status">
+                                    <option value="Pending" {% if order.order.status == 'Pending' %} selected {% endif %}>Pending</option>
+                                    <option value="Processing" {% if order.order.status == 'Processing' %} selected {% endif %}>Processing</option>
+                                    <option value="Shipped" {% if order.order.status == 'Shipped' %} selected {% endif %}>Shipped</option>
+                                    <option value="Delivered" {% if order.order.status == 'Delivered' %} selected {% endif %}>Delivered</option>
+                                    <option value="Cancelled" {% if order.order.status == 'Cancelled' %} selected {% endif %}>Cancelled</option>
+                                </select>
+                                <input type="hidden" name="order_id" value="{{ order.order.order_id }}">
+                                <input type="submit" value="Change Status">
+                            </form>
+                        </p>
+                        <!-- Add more order details as needed -->
+                    </div>
+                </div>
+                <h4>Items Ordered</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <!-- Add more table headers as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.order.items_ordered %}
+                            <tr>
+                                <td>{{ item.item_id }}</td>
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>{{ item.quantity * item.price }}</td>
+                                <!-- Add more table cells as needed -->
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

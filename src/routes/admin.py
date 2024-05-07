@@ -64,8 +64,8 @@ async def get_customer_order(user: User, customer_id: str, order_id: str):
     customer_details = await customer_controller.get_customer_details(customer_id=customer_id)
     order = await customer_controller.customer_order_by_order_id(order_id=order_id)
     print(order)
-    context = dict(customer=customer_details.dict(), order=order.dict())
-    return context
+    context = dict(user=user, customer=customer_details, order=order)
+    return render_template('admin/orders/includes/order_detail.html', **context)
 
 
 @admin_route.get('/admin/customers')
