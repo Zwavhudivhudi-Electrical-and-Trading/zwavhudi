@@ -91,7 +91,9 @@ async def edit_customer(user: User, customer_id: str):
     :param customer_id:
     :return:
     """
-    pass
+    customer_details = await customer_controller.get_customer_details(customer_id=customer_id)
+    context = dict(user=user, customer=customer_details)
+    return render_template('admin/customers/includes/edit.html', **context)
 
 
 @admin_route.get('/admin/products')
