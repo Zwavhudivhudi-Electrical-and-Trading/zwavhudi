@@ -61,6 +61,7 @@ async def get_customer_order(user: User,customer_id:str, order_id: str):
     """
     order = await customer_controller.customer_order_by_order_id(order_id=order_id)
     print(order)
+    return order
 
 @admin_route.get('/admin/customers')
 @admin_login
