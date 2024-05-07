@@ -49,9 +49,11 @@ async def get_orders(user: User):
     }
 
     return render_template('admin/orders/orders.html', **context)
+
+
 @admin_route.get('/admin/order/<string:customer_id>/<string:order_id>')
 @admin_login
-async def get_customer_order(user: User,customer_id:str, order_id: str):
+async def get_customer_order(user: User, customer_id: str, order_id: str):
     """
 
     :param customer_id:
@@ -59,9 +61,12 @@ async def get_customer_order(user: User,customer_id:str, order_id: str):
     :param order_id:
     :return:
     """
+    customer_details = await customer_controller.get_customer_details(customer_id=customer_id)
     order = await customer_controller.customer_order_by_order_id(order_id=order_id)
     print(order)
-    return order.dict()
+    context = dict(customer=customer_details, order=order)
+    return context
+
 
 @admin_route.get('/admin/customers')
 @admin_login
