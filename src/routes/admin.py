@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from pydantic import ValidationError
 
+from database.models.orders import OrderStatus
 from src.authentication import admin_login
 from src.database.models.products import Product, Category
 from src.database.models.users import User
-from src.main import product_controller
+from src.main import product_controller, customer_controller
 
 admin_route = Blueprint('admin', __name__)
 
@@ -26,7 +27,28 @@ async def get_orders(user: User):
     :param user:
     :return:
     """
-    pass
+    status = OrderStatus.PENDING.value
+    pending_orders = await customer_controller.get_orders_by_status(status=status)
+    status = OrderStatus.PROCESSING.value
+    processing_orders = await customer_controller.get_orders_by_status(status=status)
+    status = OrderStatus.SHIPPED.value
+    shipped_orders = await customer_controller.get_orders_by_status(status=status)
+    status = OrderStatus.DELIVERED.value
+    delivered_orders = await customer_controller.get_orders_by_status(status=status)
+    status = OrderStatus.CANCELLED.value
+    cancelled_orders = await customer_controller.get_orders_by_status(status=status)
+    context = {
+        'user': user,
+        'orders_by_status': {
+            OrderStatus.PENDING.value: pending_orders,
+            OrderStatus.PROCESSING.value: processing_orders,
+            OrderStatus.SHIPPED.value: shipped_orders,
+            OrderStatus.DELIVERED.value: delivered_orders,
+            OrderStatus.CANCELLED.value: cancelled_orders
+        }
+    }
+
+    return render_template('admin/orders/orders.html')
 
 
 

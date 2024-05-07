@@ -357,6 +357,25 @@ class CustomerController(Controllers):
 
             session.commit()
             return order
+    async def get_orders_by_status(self, status: str) -> list[Order]:
+        """
+            class OrderStatus(Enum):
+                INCOMPLETE = "Incomplete"
+                PENDING = 'Pending'
+                PROCESSING = 'Processing'
+                SHIPPED = 'Shipped'
+                DELIVERED = 'Delivered'
+                CANCELLED = 'Cancelled'
+
+        :param status:
+        :return:
+        """
+        with self.get_session() as session:
+            orders_list = session.query(OrderORM).filter_by(status=status).all()
+            return [Order(**order_orm.to_dict()) for order_orm in orders_list if isinstance(order_orm, OrderORM)]
+
+
+
 
     async def email_invoice(self, email_address: str, order: Order):
         """
