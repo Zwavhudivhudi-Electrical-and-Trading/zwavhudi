@@ -33,7 +33,7 @@ class Logging(BaseSettings):
 
 class ResendSettings(BaseSettings):
     API_KEY: str = Field(..., env="RESEND_API_KEY")
-    from_: str = Field(default="norespond@dreamland-chemicals.org")
+    from_: str = Field(default="norespond@zwavhudivhudi-electrical.work")
 
     class Config:
         env_file = '.env.development'
@@ -42,8 +42,8 @@ class ResendSettings(BaseSettings):
 
 class EmailSettings(BaseSettings):
     RESEND: ResendSettings = ResendSettings()
-    COMPANY_ADMIN_EMAIL: str = Field(default="tendani@dreamland-chemicals.org")
-    SYSTEM_ADMIN_EMAIL: str = Field(default="justice@dreamland-chemicals.org")
+    COMPANY_ADMIN_EMAIL: str = Field(default="pfunzo@zwavhudivhudi-electrical.work")
+    SYSTEM_ADMIN_EMAIL: str = Field(default="justice@zwavhudivhudi-electrical.work")
 
     class Config:
         env_file = '.env.development'
@@ -70,7 +70,7 @@ class BrainTreeSettings(BaseSettings):
 
 class Settings(BaseSettings):
     APP_NAME: str = Field(default='Last Base')
-    LOGO_URL: str = Field(default="https://dreamland-chemicals.org/static/images/custom/logo.png")
+    LOGO_URL: str = Field(default="https://zwavhudivhudi-electrical.work/static/images/custom/logo.png")
     SECRET_KEY: str = Field(..., env="SECRET_KEY")
     CLIENT_SECRET: str = Field(..., env="CLIENT_SECRET")
     MYSQL_SETTINGS: MySQLSettings = MySQLSettings()
