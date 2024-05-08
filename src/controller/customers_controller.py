@@ -131,20 +131,28 @@ class CustomerController(Controllers):
 
                 customer_orm.customer_id = customer_details.customer_id
                 customer_orm.uid = customer_details.uid
-
-                customer_orm.full_names = customer_details.full_names
-                customer_orm.surname = customer_details.surname
-                customer_orm.email = customer_details.email
-                customer_orm.contact_number = customer_details.contact_number
-                customer_orm.delivery_address_id = customer_details.delivery_address_id
-
-                customer_orm.date_joined = customer_details.date_joined
-                customer_orm.is_active = customer_details.is_active
-
-                customer_orm.address_id = customer_details.address_id
-                customer_orm.contact_id = customer_details.contact_id
-                customer_orm.postal_id = customer_details.postal_id
-                customer_orm.bank_account_id = customer_details.bank_account_id
+                if customer_details.full_names:
+                    customer_orm.full_names = customer_details.full_names
+                if customer_details.surname:
+                    customer_orm.surname = customer_details.surname
+                if customer_details.email:
+                    customer_orm.email = customer_details.email
+                if customer_details.contact_number:
+                    customer_orm.contact_number = customer_details.contact_number
+                if customer_details.delivery_address_id:
+                    customer_orm.delivery_address_id = customer_details.delivery_address_id
+                if customer_details.date_joined:
+                    customer_orm.date_joined = customer_details.date_joined
+                if customer_details.is_active:
+                    customer_orm.is_active = customer_details.is_active
+                if customer_details.address_id:
+                    customer_orm.address_id = customer_details.address_id
+                if customer_details.contact_id:
+                    customer_orm.contact_id = customer_details.contact_id
+                if customer_details.postal_id:
+                    customer_orm.postal_id = customer_details.postal_id
+                if customer_details.bank_account_id:
+                    customer_orm.bank_account_id = customer_details.bank_account_id
 
             else:
                 # Create a new customer entry
@@ -159,7 +167,7 @@ class CustomerController(Controllers):
 
                     date_joined=customer_details.date_joined,
                     is_active=customer_details.is_active,
-
+                    delivery_address_id=customer_details.delivery_address_id,
                     address_id=customer_details.address_id,
                     contact_id=customer_details.contact_id,
                     postal_id=customer_details.postal_id,
@@ -167,8 +175,9 @@ class CustomerController(Controllers):
                 )
                 session.add(customer_orm)
 
-        session.commit()
-        return customer_details
+            session.commit()
+            return customer_details
+
 
     async def get_customer_details(self, customer_id: str) -> CustomerDetails | None:
         with self.get_session() as session:

@@ -127,7 +127,10 @@ async def capture_customer_details(user: User):
     """
     customer_details = CustomerDetails(**request.form, uid=user.uid, customer_id=user.customer_id)
     customer_details_ = await customer_controller.add_customer_details(customer_details=customer_details)
-    flash(message="Successfully Captured Customer Details")
+    if customer_details_:
+        flash(message="Successfully Captured Customer Details", category="success")
+    else:
+        flash(message="Unable to save Customer Details", category="danger")
     return redirect(url_for('cart.get_orders'))
 
 
