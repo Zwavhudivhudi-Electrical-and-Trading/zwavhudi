@@ -22,7 +22,6 @@ class RecipientTypes(Enum):
 
 
 class SMSCompose(BaseModel):
-
     message_id: str = Field(default_factory=create_id)
     reference: str | None
     message: str
@@ -37,7 +36,6 @@ class SMSCompose(BaseModel):
 
 
 class SMSInbox(BaseModel):
-
     message_id: str = Field(default_factory=create_id)
     to_branch: str
     parent_reference: str | None
@@ -52,7 +50,7 @@ class SMSInbox(BaseModel):
 class EmailCompose(BaseModel):
     message_id: str = Field(default_factory=create_id)
     from_email: str | None
-    to_email: str| None
+    to_email: str | None
     subject: str
     message: str
     to_branch: str
@@ -62,6 +60,7 @@ class EmailCompose(BaseModel):
 class ContactForm(BaseModel):
     uid: str
     contact_id: str = Field(default_factory=create_id)
+    original_contact_id: str | None
     name: str
     email: str
     message: str
@@ -69,3 +68,6 @@ class ContactForm(BaseModel):
     issue_resolved: bool = Field(default=False)
 
 
+class Ticket(BaseModel):
+    ticket_id: str
+    original_contact_id: str | None

@@ -222,4 +222,16 @@ async def get_contact_message(user: User, contact_id: str):
     return render_template('admin/messages/includes/message.html', **context)
 
 
+@admin_route.post('/admin/message/<string:contact_id>')
+@admin_login
+async def send_contact_message_response(user: User, contact_id: str):
+    """
 
+    :param user:
+    :param contact_id:
+    :return:
+    """
+
+    contact_message = await customer_controller.get_contact_message(contact_id=contact_id)
+    flash(message=f"Response is Successfully sent to : contact message : {contact_message.email}", category="success")
+    return redirect(url_for("admin.get_contact_message", contact_id=contact_id))

@@ -92,6 +92,7 @@ class ContactFormORM(Base):
     __tablename__ = "contact_form"
     uid: str = Column(String(ID_LEN))
     contact_id: str = Column(String(ID_LEN), primary_key=True)
+    original_contact_id: str = Column(String(ID_LEN))
     name: str = Column(String(NAME_LEN))
     email: str = Column(String(255))
     message: str = Column(Text)
@@ -115,6 +116,7 @@ class ContactFormORM(Base):
         return {
             "uid": self.uid,
             "contact_id": self.contact_id,
+            "original_contact_id": self.original_contact_id,
             "name": self.name,
             "email": self.email,
             "message": self.message,

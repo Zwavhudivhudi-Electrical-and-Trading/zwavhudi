@@ -24,7 +24,7 @@
                 <textarea class="col-12" readonly rows="8">{{ contact_message.message }}</textarea>
             </div>
             <div class="card-footer">
-                <form action="#" method="post">
+                <form action="{{ url_for("admin.send_contact_message_response", contact_id=contact_message.contact_id) }}" method="post">
                     <div class="form-group">
                         <label for="response" class="font-weight-bold">Your Response:</label>
                         <textarea class="col-12" id="response" name="response" rows="8" required></textarea>
