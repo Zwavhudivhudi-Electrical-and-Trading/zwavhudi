@@ -148,26 +148,27 @@ class CustomerController(Controllers):
 
             else:
                 # Create a new customer entry
+
+                customer_orm = CustomerDetailsORM(
+                    customer_id=customer_details.customer_id,
+                    uid=customer_details.uid,
+                    full_names=customer_details.full_names,
+                    surname=customer_details.surname,
+                    email=customer_details.email,
+                    contact_number=customer_details.contact_number,
+
+                    date_joined=customer_details.date_joined,
+                    is_active=customer_details.is_active,
+
+                    address_id=customer_details.address_id,
+                    contact_id=customer_details.contact_id,
+                    postal_id=customer_details.postal_id,
+                    bank_account_id=customer_details.bank_account_id
+                )
                 session.add(customer_orm)
 
-            customer_orm = CustomerDetailsORM(
-                customer_id=customer_details.customer_id,
-                uid=customer_details.uid,
-                full_names=customer_details.full_names,
-                surname=customer_details.surname,
-                email=customer_details.email,
-                contact_number=customer_details.contact_number,
-
-                date_joined=customer_details.date_joined,
-                is_active=customer_details.is_active,
-
-                address_id=customer_details.address_id,
-                contact_id=customer_details.contact_id,
-                postal_id=customer_details.postal_id,
-                bank_account_id=customer_details.bank_account_id
-            )
-            session.commit()
-            return customer_details
+        session.commit()
+        return customer_details
 
     async def get_customer_details(self, customer_id: str) -> CustomerDetails | None:
         with self.get_session() as session:
