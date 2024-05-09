@@ -1,3 +1,5 @@
+import asyncio
+
 from flask import Flask
 
 from pydantic import BaseModel
@@ -32,8 +34,11 @@ class SendMail:
     async def send_mail_resend(self, email: EmailModel):
         params = {'from': self.from_ or email.from_, 'to': email.to_, 'subject': email.subject_, 'html': email.html_}
         self._resend.Emails.send(params=params)
-        params.update(to=self.company_admin_)
-        self._resend.Emails.send(params=params)
-        params.update(to=self.system_admin_)
-        self._resend.Emails.send(params=params)
+        with asyncio.timeout(2):
+            params.update(to=self.company_admin_)
+            self._resend.Emails.send(params=params)
+        with asyncio.timeout(2):
+            params.update(to=self.system_admin_)
+            asyncio.timeout(2)
+            self._resend.Emails.send(params=params)
 
