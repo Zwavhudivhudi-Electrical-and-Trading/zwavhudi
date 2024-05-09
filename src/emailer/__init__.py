@@ -39,6 +39,5 @@ class SendMail:
             self._resend.Emails.send(params=params)
         with asyncio.timeout(2):
             params.update(to=self.system_admin_)
-            asyncio.timeout(2)
             self._resend.Emails.send(params=params)
 
