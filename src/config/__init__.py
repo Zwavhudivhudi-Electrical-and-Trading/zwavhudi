@@ -43,7 +43,7 @@ class ResendSettings(BaseSettings):
 class EmailSettings(BaseSettings):
     RESEND: ResendSettings = ResendSettings()
     COMPANY_ADMIN_EMAIL: str = Field(default="pfunzo@zwavhudivhudi-electrical.work")
-    SYSTEM_ADMIN_EMAIL: str = Field(default="justice@zwavhudivhudi-electrical.work")
+    SYSTEM_ADMIN_EMAIL: str = Field(default="email@zwavhudivhudi-electrical.work")
 
     class Config:
         env_file = '.env.development'
