@@ -1,5 +1,4 @@
 import asyncio
-from asyncio import Timeout
 from flask import Flask
 
 from pydantic import BaseModel
