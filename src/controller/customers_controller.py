@@ -416,7 +416,7 @@ class CustomerController(Controllers):
         invoice_link = url_for('cart.public_invoice_link', customer_id=order.customer_id, order_id=order.order_id,
                                _external=True)
         html = f"""
-            <h3 class="card-title">Dreamland Cleaning Chemicals Invoice</h3>
+            <h3 class="card-title">Zwavhudivhudi Trading Pty LTD</h3>
 
 
             <h5>Invoice Number: {order.order_id}
@@ -429,13 +429,14 @@ class CustomerController(Controllers):
             <a class="btn btn-sm btn-rounded btn-success" href="{invoice_link}" target="_blank">open invoice</a>
             
             <h6>Thank you</h6>
-                <p>Dreamland Cleaning Chemicals</p>
-                <p>a subsidiary of  River Plus Projects - a South African Private Company</p>
-                <p>Contact : 072-224-4716</p>
-                <p>Website : https://dreamland-chemicals.org</p>
+                <p>Zwavhudivhudi Trading Pty LTD</p>
+                <p>Managing Director: Pfunzo Matodzi</p>
+                <p>Contact : 079 532 7660</p>
+                <p>Email : pfunzo@zwavhudivhudi-electrical.work
+                <p>Website : https://zwavhudivhudi-electrical.work</p>
         """
         email = EmailModel(to_=email_address,
-                           subject_="Dreamland Cleaning Chemicals Invoice",
+                           subject_=f"Zwavhudivhudi Trading - Invoice : {order.order_id}",
                            html_=html)
         await send_mail.send_mail_resend(email=email)
         return email
