@@ -85,7 +85,7 @@ class Settings(BaseSettings):
     FLUTTERWAVE_HASH: str = Field(..., env="FLUTTERWAVE_HASH")
     PAYPAL_SETTINGS: PayPalSettings = PayPalSettings()
     ADMIN_EMAIL: str = "admin@last-shelter.vip"
-    AUTH_CODE: str = "sdasdasdas"
+    AUTH_CODE: str = "pfunzo@zwavhudivhudi-electrical.work"
 
 
 
