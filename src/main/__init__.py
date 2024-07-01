@@ -11,7 +11,7 @@ send_mail = SendMail()
 
 from src.controller.auth import UserController
 from src.controller.customers_controller import CustomerController
-from src.controller.orders_controller import  OrdersController
+from src.controller.orders_controller import OrdersController
 from src.controller.paypal_controller import PayPalController
 from src.controller.chat_controller import ChatController
 from src.controller.messaging_controller import MessagingController
